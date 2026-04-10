@@ -5,16 +5,19 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - Harming Environment
+  - NPC
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - Panel
   - Blur
-  - 
+  - BG
   - 
   - 
   - 
@@ -39,8 +42,16 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 168708443
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: ForeGround
+    uniqueID: 420388023
+    locked: 0
   m_RenderingLayers:
   - Default
+  - BG
+  - Ground

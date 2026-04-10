@@ -10,31 +10,23 @@ public class PlayerAnimationScript : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    public void IdleAnimation()
-    {
-        anim.SetBool("IsRunning", false);
-        anim.SetBool("IsSprinting", false);
-        anim.SetBool("IsCrouching", false);
+    public void updateAnimations(float move, bool grounded, bool crouching, bool dashing, int randInt) {
+        anim.SetBool("IsGrounded", grounded);
+        anim.SetBool("IsCrouching", crouching);
+        anim.SetBool("IsDashing", dashing);
+
+        float jumpVelocity = GetComponent<Rigidbody2D>().linearVelocity.y;
+        anim.SetFloat("JumpVelocity", jumpVelocity);
+
+        if(randInt == 67) {
+            anim.SetTrigger("Random");
+        }
+
+        float speed = Mathf.Abs(GetComponent<Rigidbody2D>().linearVelocity.x);
+        anim.SetFloat("Speed", speed);
     }
 
-    public void RunningAnimation()
-    {
-        anim.SetBool("IsRunning", true);
-        anim.SetBool("IsSprinting", false);
-        anim.SetBool("IsCrouching", false);
-    }
-
-    public void SprintingAnimation()
-    {
-        anim.SetBool("IsSprinting", true);
-        anim.SetBool("IsRunning", false);
-        anim.SetBool("IsCrouching", false);
-    }
-
-    public void CrouchingAnimation()
-    {
-        anim.SetBool("IsCrouching", true);
-        anim.SetBool("IsRunning", false);
-        anim.SetBool("IsSprinting", false);
+    public void ForceIdle() {
+        anim.SetFloat("Speed", 0);
     }
 }
