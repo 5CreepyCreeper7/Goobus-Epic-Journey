@@ -8,6 +8,8 @@ TagManager:
   - Harming Environment
   - NPC
   - Enemy
+  - RecordPlayer
+  - Manager
   layers:
   - Default
   - TransparentFX
@@ -50,6 +52,9 @@ TagManager:
     locked: 0
   - name: ForeGround
     uniqueID: 420388023
+    locked: 0
+  - name: UI
+    uniqueID: 962450261
     locked: 0
   m_RenderingLayers:
   - Default
