@@ -35,14 +35,14 @@ public class BeginDialog : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.CompareTag("NPC")) {
+        if(collision.CompareTag("NPC") || collision.CompareTag("Sign")) {
             currentNPC = collision.gameObject;
             playerInRange = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        if(collision.CompareTag("NPC")) {
+        if(collision.CompareTag("NPC") || collision.CompareTag("Sign")) {
             currentNPC = null;
             playerInRange = false;
         }

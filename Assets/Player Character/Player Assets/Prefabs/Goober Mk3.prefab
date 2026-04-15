@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 996996891572657590}
   - component: {fileID: 6678966431543020035}
   - component: {fileID: 5421359204397067151}
+  - component: {fileID: 8156862383657103225}
   m_Layer: 0
   m_Name: Goober Mk3
   m_TagString: Player
@@ -480,6 +481,7 @@ MonoBehaviour:
   dashCooldown: 1
   cannotDashIndicatorMaterial: {fileID: 2100000, guid: 44a259012047fbd4cb021204e48bdc91, type: 2}
   defaultMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  originalGravityScale: 0
   moveAction: {fileID: 4873054935482517471, guid: 2d4b2828bf846be4cb25b2381b7539b2, type: 3}
   jumpAction: {fileID: -2243733403258074368, guid: 2d4b2828bf846be4cb25b2381b7539b2, type: 3}
   sprintAction: {fileID: 7215613133587516026, guid: 2d4b2828bf846be4cb25b2381b7539b2, type: 3}
@@ -588,7 +590,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.263
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -709,3 +711,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newColor: {r: 0.51690996, g: 0.63403696, b: 0.9056604, a: 0}
   usingSpriteRenderer: 1
+--- !u!114 &8156862383657103225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395221277926435880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91649255bb0a622419014d9310086bcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recordMenuPanel: {fileID: 0}

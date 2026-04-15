@@ -29,8 +29,6 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         targetScale = originalScale * hoverScale;
-        Debug.Log("Hovering");
-        Debug.Log(transform.localScale);
     }
 
     public void OnPointerExit(PointerEventData eventData)

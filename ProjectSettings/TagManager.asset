@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - RecordPlayer
   - Manager
+  - Sign
   layers:
   - Default
   - TransparentFX

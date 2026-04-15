@@ -54,10 +54,8 @@ public class OpenRecordMenu : MonoBehaviour
     }
 
     public void CloseMenu(GameObject recordMenuPanel) {
-        RecordMenuLogic.ResetArm();
+        RecordMenuLogic.ResetMenu();
         recordMenuPanel.SetActive(false);
-        RecordMenuLogic.StopCurrentRecord();
-        RecordMenuLogic.ResumeMainAudio();
         playerMovementScript.enabled = true;
     }
 }

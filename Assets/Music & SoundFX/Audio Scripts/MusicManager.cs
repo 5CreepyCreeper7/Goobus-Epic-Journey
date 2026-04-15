@@ -1,15 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
+    
+    public AudioManager audioManager;
 
     public AudioSource musicSource;
 
     public AudioClip titleTheme;
     public AudioClip TutorialTheme;
     public AudioClip Lvl1Theme;
+
+    private Coroutine fadeCoroutine;
 
     private void Awake()
     {
@@ -32,13 +37,13 @@ public class MusicManager : MonoBehaviour
         switch (scene.name)
         {
             case "TitleScreen":
-                PlayMusic(titleTheme);
+                StartMusicWithFade(titleTheme, 2f);
                 break;
             case "TutorialScene":
-                PlayMusic(TutorialTheme);
+                StartMusicWithFade(TutorialTheme, 2f);
                 break;
             case "SampleScene":
-                PlayMusic(Lvl1Theme);
+                StartMusicWithFade(Lvl1Theme, 2f);
                 break;
             default:
                 musicSource.Stop();
@@ -46,23 +51,40 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    private void PlayMusic(AudioClip clip)
-    {
-        if (musicSource.clip == clip) return; // Avoid restarting the same music
-
-        musicSource.clip = clip;
-        musicSource.loop = true;
-        musicSource.Play();
-    }
-
     public void SetMusicVolume(float volume)
     {
         musicSource.volume = volume;
     }
 
-    public void SetSFXVolume(float volume)
+    public void fadeInMusic(float duration) {
+        StartCoroutine(FadeInMusicCoroutine(duration));
+    }
+
+    private IEnumerator FadeInMusicCoroutine(float duration) {
+        float targetVolume = AudioManager.Instance.GetMusicVolume();
+        musicSource.volume = 0f;
+        musicSource.Play();
+
+        float elapsedTime = 0f;
+        while (elapsedTime < duration) {
+            musicSource.volume = Mathf.Lerp(0f, targetVolume, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        musicSource.volume = targetVolume; // Ensure it ends at the target volume
+        fadeCoroutine = null;
+    }
+
+    private void StartMusicWithFade(AudioClip clip, float duration)
     {
-        // This method can be expanded to set the volume of sound effects as well
+        if (musicSource.clip == clip && musicSource.isPlaying) return;
+
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        musicSource.clip = clip;
+        musicSource.loop = true;
+        fadeCoroutine = StartCoroutine(FadeInMusicCoroutine(duration));
     }
 }
 

@@ -559,9 +559,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34dc54387b234bc4caad3030eeb30689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   musicSource: {fileID: 96773037}
   titleTheme: {fileID: 8300000, guid: 938f1932e3dc9974f93ba22b4e9cae99, type: 3}
-  TutorialTheme: {fileID: 8300000, guid: 75ccd679fe10dcf42898627af95a9db8, type: 3}
+  TutorialTheme: {fileID: 8300000, guid: a05b9b5d386bb8f4ca7a3375f9d2ef16, type: 3}
   Lvl1Theme: {fileID: 8300000, guid: ea00f4cdbaec4f242912ac326ea15ce2, type: 3}
 --- !u!114 &1694250941
 MonoBehaviour:

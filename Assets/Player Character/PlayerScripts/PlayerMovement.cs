@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerAnimationScript playerAnimationScript;
     private PlayerSoundFX playerSoundFX;
     private BoxCollider2D boxCollider;
+    private GameObject currentInteractable;
 
     void Awake()
     {
@@ -317,6 +318,18 @@ public class PlayerMovement : MonoBehaviour
             }
         } else {
             walkTimer = 0f;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if(collision.CompareTag("NPC") || collision.CompareTag("RecordPlayer")) {
+            currentInteractable = collision.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if(collision.gameObject == currentInteractable) {
+            currentInteractable = null;
         }
     }
 }

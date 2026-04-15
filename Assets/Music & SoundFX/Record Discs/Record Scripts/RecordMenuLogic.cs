@@ -31,6 +31,7 @@ public class RecordMenuLogic : MonoBehaviour
     private bool moveArm = false;
     private bool isPaused = false;
     private bool isDraggingSlider = false;
+    private bool menuOpen = false;
 
     private AudioSource audioSource;
     private AudioSource mainAudioSource;
@@ -72,7 +73,7 @@ public class RecordMenuLogic : MonoBehaviour
 
         StopCurrentRecord();
 
-        pauseButtonImage.sprite = pauseIcon;
+        updatePauseIcon();
 
         spinningRecordImage.sprite = recordSprites[recordIndex];
         spinningRecordImage.enabled = true;
@@ -83,35 +84,32 @@ public class RecordMenuLogic : MonoBehaviour
         getTotalTime();
         audioSource.Play();
 
-        //if(musicParticles != null && !musicParticles.isPlaying) {
-        //    musicParticles.Play();
-        //}
-
         HighlightCurrentSong(recordIndex);
 
         StartArmMovement();
     }
 
     public void StopCurrentRecord() {
-        if(audioSource.isPlaying) {
+        if (audioSource.clip != null) {
             audioSource.Stop();
-
-            ProgressBar.value = 0f;
-
-            timeElapsedText.text = "0:00";
-            //totalTimeText.text = "0:00";
-
-            ResetSongColors();
-
-            if (EighthNoteParticles != null && EighthNoteParticles.isPlaying) {
-                EighthNoteParticles.Stop();
-            }
-            if (QuarterNoteParticles != null && QuarterNoteParticles.isPlaying) {
-                QuarterNoteParticles.Stop();
-            }
-
-            spinningRecordImage.enabled = false;
+            audioSource.clip = null;
         }
+
+        isPaused = false;
+
+        ProgressBar.value = 0f;
+        timeElapsedText.text = "0:00";
+
+        ResetSongColors();
+
+        if (EighthNoteParticles != null && EighthNoteParticles.isPlaying) {
+            EighthNoteParticles.Stop();
+        }
+        if (QuarterNoteParticles != null && QuarterNoteParticles.isPlaying) {
+            QuarterNoteParticles.Stop();
+        }
+
+        spinningRecordImage.enabled = false;
     }
 
     public void ResumeMainAudio() {
@@ -167,21 +165,21 @@ public class RecordMenuLogic : MonoBehaviour
         if(audioSource.isPlaying) {
             audioSource.Pause();
             isPaused = true;
-            pauseButtonImage.sprite = playIcon;
+            updatePauseIcon();
             if(EighthNoteParticles != null && EighthNoteParticles.isPlaying) {
-                EighthNoteParticles.Pause();
+                EighthNoteParticles.Stop();
             }
             if(QuarterNoteParticles != null && QuarterNoteParticles.isPlaying) {
-                QuarterNoteParticles.Pause();
+                QuarterNoteParticles.Stop();
             }
         } else {
             audioSource.UnPause();
             isPaused = false;
-            pauseButtonImage.sprite = pauseIcon;
-            if(EighthNoteParticles != null && EighthNoteParticles.isPaused) {
+            updatePauseIcon();
+            if(EighthNoteParticles != null) {
                 EighthNoteParticles.Play();
             }
-            if(QuarterNoteParticles != null && QuarterNoteParticles.isPaused) {
+            if(QuarterNoteParticles != null) {
                 QuarterNoteParticles.Play();
             }
         }
@@ -191,6 +189,10 @@ public class RecordMenuLogic : MonoBehaviour
         if(audioSource.clip != null && !isDraggingSlider) {
             ProgressBar.value = audioSource.time / audioSource.clip.length;
         } 
+    }
+
+    public void ResetProgressBar() {
+        ProgressBar.value = 0f;
     }
 
     public void OnSliderPointerDown() {
@@ -218,6 +220,14 @@ public class RecordMenuLogic : MonoBehaviour
         }
     }
 
+    public void updatePauseIcon() {
+        if(isPaused) {
+            pauseButtonImage.sprite = playIcon;
+        } else {
+            pauseButtonImage.sprite = pauseIcon;
+        }
+    }
+
     private string FormatTime(float time) {
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);
@@ -233,11 +243,32 @@ public class RecordMenuLogic : MonoBehaviour
         }
     }
 
-    private void ResetSongColors()
+    public void ResetSongColors()
     {
         for (int i = 0; i < songEntries.Length; i++)
         {
             songEntries[i].SetPlaying(false);
         }
+    }
+
+    public void ResetTimeText() {
+        timeElapsedText.text = "0:00";
+        TotalTimeText.text = "0:00";
+    }
+
+    public void ResetRecordSprite() {
+        spinningRecordImage.enabled = false;
+    }
+
+    public void ResetMenu() {
+        isPaused = false;
+        updatePauseIcon();
+        ResetArm();
+        StopCurrentRecord();
+        ResumeMainAudio();
+        ResetProgressBar();
+        ResetSongColors();
+        ResetRecordSprite();
+        ResetTimeText();
     }
 }

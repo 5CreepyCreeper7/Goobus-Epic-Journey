@@ -3,7 +3,7 @@ using TMPro;
 
 public class CurrentlyPlaying : MonoBehaviour
 {
-    public TextMeshProUGUI currentlyPlayingText;
+    private TextMeshProUGUI currentlyPlayingText;
 
     private void Awake() {
         currentlyPlayingText = GetComponent<TextMeshProUGUI>();

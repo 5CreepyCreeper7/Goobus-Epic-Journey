@@ -9,6 +9,7 @@ public class PauseManager : MonoBehaviour
     public GameObject videoSettingsMenu;
     public GameObject audioSettingsMenu;
     public GameObject dialogPanel;
+    public GameObject RecordMenuPanel;
 
     public InputActionReference pauseAction;
     
@@ -17,6 +18,7 @@ public class PauseManager : MonoBehaviour
 
     public bool isPaused = false;
     public bool wasInDialog = false;
+    public bool wasInRecordMenu = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,19 +56,24 @@ public class PauseManager : MonoBehaviour
             optionsMenu.SetActive(false);
             videoSettingsMenu.SetActive(false);
             audioSettingsMenu.SetActive(false);
+            RecordMenuPanel.SetActive(false);
             Time.timeScale = 1f; 
             isPaused = false;
         }
 
         if(scene.name == "TitleScreen") {
             isPaused = false;
-            Time.timeScale = 1f;
+            //Time.timeScale = 1f;
         }
     }
 
     public void PauseGame()
     {
         playerMovement.enabled = false;
+        if(RecordMenuPanel.activeSelf) {
+            wasInRecordMenu = true;
+            RecordMenuPanel.SetActive(false);
+        }
         PauseMenu.SetActive(true);
 
         if(DialogLogicScript.isDialogActive) {
@@ -74,7 +81,7 @@ public class PauseManager : MonoBehaviour
             dialogPanel.SetActive(false);
         }
 
-        Time.timeScale = 0f; 
+        //Time.timeScale = 0f; 
         isPaused = true;
     }
 
@@ -88,8 +95,13 @@ public class PauseManager : MonoBehaviour
             dialogPanel.SetActive(true);
             wasInDialog = false;
         }
+
+        if(wasInRecordMenu) {
+            RecordMenuPanel.SetActive(true);
+            wasInRecordMenu = false;
+        }
         
-        Time.timeScale = 1f; 
+        //Time.timeScale = 1f; 
         playerMovement.enabled = true;
         isPaused = false;
     }
@@ -131,7 +143,7 @@ public class PauseManager : MonoBehaviour
     }
 
     public void ReturnToTitleScreen() {
-        Time.timeScale = 1f; 
+        //Time.timeScale = 1f; 
         UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
     }
 
