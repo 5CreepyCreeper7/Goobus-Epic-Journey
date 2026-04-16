@@ -1,6 +1,6 @@
 # Goobus' Epic Journey
 ## About us:
-We are an indie team consisting of four *main members* and six additional helpers.
+We are an indie team consisting of *four main members* and six additional helpers.
 - Developer: *5CreepyCreeper7*
 - Composer: *Krillius*
 - Art Design: *Kembi*, *Phets*
@@ -12,7 +12,7 @@ We are an indie team consisting of four *main members* and six additional helper
 This is our first game, which consists of equal parts whimsy, action, and challenge
 
 ## About the game:
-*Goobus' Epic Journey is a 2D platformer currently in early development.
+*Goobus' Epic Journey* is a 2D platformer currently in early development.
 
 While there isn't much to share at the moment, some things to expect are:
 - A plethora of interesting and unique platforming challenges
@@ -23,5 +23,5 @@ While there isn't much to share at the moment, some things to expect are:
 Keep an eye out for new releases to try as they come out and let us know if you encounter any issues
 
 ## Latest Release:
-https://github.com/5CreepyCreeper7/Goobus-Epic-Journey/releases/tag/v0.1.0
+https://github.com/5CreepyCreeper7/Goobus-Epic-Journey/releases/tag/v0.1.1
 
