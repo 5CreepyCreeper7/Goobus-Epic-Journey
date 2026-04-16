@@ -3281,6 +3281,18 @@ PrefabInstance:
       propertyPath: dialogLogic
       value: 
       objectReference: {fileID: 1865279835}
+    - target: {fileID: 4626674581611353573, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4626674581611353573, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 4626674581611353573, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.67
+      objectReference: {fileID: 0}
     - target: {fileID: 7652627632441760896, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -71.10591
@@ -6696,6 +6708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashDuration: 0.1
+  flashInterval: 0.2
 --- !u!4 &2045703590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 200255f68dbbba147b89d12dbf6f8d0a, type: 3}

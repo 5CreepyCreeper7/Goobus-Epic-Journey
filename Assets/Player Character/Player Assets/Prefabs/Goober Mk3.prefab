@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7179616702427748342}
   - component: {fileID: 260417316457694986}
   - component: {fileID: 7639317634580051575}
+  - component: {fileID: 8196775532703408799}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -170,6 +171,18 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &8196775532703408799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768267950435841617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556faa13dd75f964da0900ae1f2c8ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4466298398555053325
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +516,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d1b22e3481bb440bdfb3c239bd9441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 0.2
+  TargetTimeScale: 0
   playerMovement: {fileID: 6927845315171105859}
 --- !u!114 &1568421811446764648
 MonoBehaviour:
@@ -721,13 +736,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8395221277926435880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91649255bb0a622419014d9310086bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordMenuPanel: {fileID: 0}
   GoobusUI: {fileID: 0}
+  recordMenuPanel: {fileID: 0}
 --- !u!114 &8563843671193443087
 MonoBehaviour:
   m_ObjectHideFlags: 0
