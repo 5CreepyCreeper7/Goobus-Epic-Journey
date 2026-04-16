@@ -3,11 +3,13 @@ using UnityEngine.InputSystem;
 
 public class OpenRecordMenu : MonoBehaviour
 {
+    public GameObject GoobusUI;
     public GameObject recordMenuPanel;
     private PlayerMovement playerMovementScript;
     private RecordMenuLogic RecordMenuLogic;
 
     private bool playerInRange = false;
+    private bool isMenuOpen = false;
 
     private void Awake() {
         playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -27,7 +29,7 @@ public class OpenRecordMenu : MonoBehaviour
     }
 
     private void TryToOpenMenu() {
-        if(!playerInRange) {
+        if(!playerInRange || isMenuOpen) {
             return;
         }
 
@@ -50,12 +52,16 @@ public class OpenRecordMenu : MonoBehaviour
 
     public void OpenMenu(GameObject recordMenuPanel) {
         recordMenuPanel.SetActive(true);
+        GoobusUI.SetActive(false);
+        isMenuOpen = true;
         playerMovementScript.enabled = false;
     }
 
     public void CloseMenu(GameObject recordMenuPanel) {
         RecordMenuLogic.ResetMenu();
         recordMenuPanel.SetActive(false);
+        GoobusUI.SetActive(true);
         playerMovementScript.enabled = true;
+        isMenuOpen = false;
     }
 }

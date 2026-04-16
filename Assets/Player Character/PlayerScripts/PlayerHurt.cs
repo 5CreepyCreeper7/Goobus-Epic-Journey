@@ -3,41 +3,60 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHurt : MonoBehaviour
 {
-    private Animator anim;
-    private PlayerMovement playerMovement;
-    private PlayerSoundFX playerSoundFX;
+    private float iFrameDuration = 0.35f; 
+    private bool isInvincible = false;
 
-    private bool isDead = false;
+    private PlayerDied playerDiedScript;
+    private HealthScript healthScript;
+    private DamageFlash damageFlash;
+    private PlayerUI playerUI;
 
-    void Awake()
-    {
-        anim = GetComponent<Animator>();
-        playerMovement = GetComponent<PlayerMovement>();
-        playerSoundFX = GetComponent<PlayerSoundFX>();
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake() {
+        playerDiedScript = GetComponent<PlayerDied>();
+        healthScript = GetComponent<HealthScript>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        damageFlash = GetComponent<DamageFlash>();
+        playerUI = FindFirstObjectByType<PlayerUI>();
     }
 
-    public void Died() {
-        if(isDead) return;
-
-        isDead = true;
-
-        playerMovement.enabled = false;
-        anim.SetTrigger("Died");
-        anim.SetBool("IsDead", true);
-        this.playerSoundFX.playDeathSound();
-
-        Rigidbody2D rb = playerMovement.GetComponent<Rigidbody2D>();
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 0f;
-        Invoke("Respawn", 0.5f);
+    private void Update() {
+        UpdateIFrameTimer();
     }
 
-    void Respawn() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        isDead = false;
-        anim.SetBool("IsDead", false);
-        playerMovement.enabled = true;
-        Rigidbody2D rb = playerMovement.GetComponent<Rigidbody2D>();
-        rb.gravityScale = playerMovement.originalGravityScale;
+    public void TakeDamage(int damageAmount) {
+        if(isInvincible) {
+            return;
+        }
+
+        BeginIFrames();
+        damageFlash.PlayerFlash();
+
+        healthScript.currentHealth -= damageAmount;
+        playerUI.RefreshHearts();
+
+        if(healthScript.currentHealth <= 0) {
+            playerDiedScript.Died();
+        }
+    }
+
+    private void BeginIFrames() {
+        isInvincible = true;
+    }
+
+    private void UpdateIFrameTimer() {
+        if(isInvincible) {
+            if(iFrameDuration > 0) {
+                iFrameDuration -= Time.deltaTime;
+            } else {
+                ResetIFrames();
+            }
+        }
+    }
+
+    private void ResetIFrames() {
+        isInvincible = false;
+        iFrameDuration = 2f;
     }
 }

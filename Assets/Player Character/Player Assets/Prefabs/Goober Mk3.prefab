@@ -286,6 +286,9 @@ GameObject:
   - component: {fileID: 6678966431543020035}
   - component: {fileID: 5421359204397067151}
   - component: {fileID: 8156862383657103225}
+  - component: {fileID: 8563843671193443087}
+  - component: {fileID: 3418457329343308313}
+  - component: {fileID: 8839460457336901642}
   m_Layer: 0
   m_Name: Goober Mk3
   m_TagString: Player
@@ -724,3 +727,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recordMenuPanel: {fileID: 0}
+  GoobusUI: {fileID: 0}
+--- !u!114 &8563843671193443087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395221277926435880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c98a5f905729e74d85b954a8ca19e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3418457329343308313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395221277926435880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78209c390c001f640a9c0ee6bfaeacbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 6
+  currentHealth: 0
+--- !u!114 &8839460457336901642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395221277926435880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d64ace2d1fac5f344bbb33c96e0a5907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashDuration: 0.35
+  flashInterval: 0.05

@@ -15,7 +15,7 @@ public class DashAttack : MonoBehaviour
             DamageFlash damageFlash = collision.GetComponent<DamageFlash>();
 
             if (damageFlash != null) {
-                damageFlash.Flash();
+                damageFlash.EnemyFlash();
             }
             
             Debug.Log("Enemy hit by dash attack!" + " Enemy health: " + enemyStats.enemyHealth);

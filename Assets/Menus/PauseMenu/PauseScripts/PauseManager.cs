@@ -10,6 +10,7 @@ public class PauseManager : MonoBehaviour
     public GameObject audioSettingsMenu;
     public GameObject dialogPanel;
     public GameObject RecordMenuPanel;
+    public GameObject GoobusUI;
 
     public InputActionReference pauseAction;
     
@@ -81,29 +82,38 @@ public class PauseManager : MonoBehaviour
             dialogPanel.SetActive(false);
         }
 
+        GoobusUI.SetActive(false);
+
         //Time.timeScale = 0f; 
         isPaused = true;
     }
 
     public void ResumeGame()
     {
+        playerMovement.enabled = true;
+        isPaused = false;
+
         optionsMenu.SetActive(false);
         audioSettingsMenu.SetActive(false);
         videoSettingsMenu.SetActive(false);
         PauseMenu.SetActive(false);
+
         if(wasInDialog) {
             dialogPanel.SetActive(true);
             wasInDialog = false;
+            playerMovement.enabled = false;
+            return;
         }
 
         if(wasInRecordMenu) {
             RecordMenuPanel.SetActive(true);
             wasInRecordMenu = false;
+            playerMovement.enabled = false;
+            return;
         }
-        
-        //Time.timeScale = 1f; 
-        playerMovement.enabled = true;
-        isPaused = false;
+
+        GoobusUI.SetActive(true);
+       
     }
 
     public void OpenVideoSettingsMenu()

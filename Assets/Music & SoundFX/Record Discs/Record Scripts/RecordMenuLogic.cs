@@ -31,7 +31,6 @@ public class RecordMenuLogic : MonoBehaviour
     private bool moveArm = false;
     private bool isPaused = false;
     private bool isDraggingSlider = false;
-    private bool menuOpen = false;
 
     private AudioSource audioSource;
     private AudioSource mainAudioSource;

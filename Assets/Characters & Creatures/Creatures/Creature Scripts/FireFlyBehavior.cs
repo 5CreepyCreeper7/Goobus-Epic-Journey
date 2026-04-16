@@ -36,9 +36,6 @@ public class FireFlyBehavior : MonoBehaviour
 
     private float glowOffset;
 
-    
-    
-
     void Awake()
     {
         fireflyLight = GetComponentInChildren<Light2D>();

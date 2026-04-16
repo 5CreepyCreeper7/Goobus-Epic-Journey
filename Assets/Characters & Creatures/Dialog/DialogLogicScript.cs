@@ -13,6 +13,8 @@ public class DialogLogicScript : MonoBehaviour
     public PlayerMovement playerMovementScript;
     public PauseManager pauseManager;
 
+    public GameObject GoobusUI;
+
     public bool isDialogActive = false;
     private bool isTyping = false;
 
@@ -44,6 +46,7 @@ public class DialogLogicScript : MonoBehaviour
             return;
         }
 
+        GoobusUI.SetActive(false);
         playerMovementScript.GetComponent<PlayerAnimationScript>().ForceIdle();
         Rigidbody2D rb = playerMovementScript.rb;
         rb.linearVelocity = Vector2.zero;
@@ -83,6 +86,7 @@ public class DialogLogicScript : MonoBehaviour
 
     public void endDialog() {
         dialogPanel.SetActive(false);
+        GoobusUI.SetActive(true);
         playerMovementScript.enabled = true;
         isDialogActive = false;
     }
