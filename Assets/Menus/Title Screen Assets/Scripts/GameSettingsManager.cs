@@ -72,4 +72,8 @@ public class GameSettingsManager : MonoBehaviour
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
+
+    public void LinkToDiscord() {
+        Application.OpenURL("https://discord.gg/Dk4Kzf75");
+    }
 }

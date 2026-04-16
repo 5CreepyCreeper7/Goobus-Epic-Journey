@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 31b7bbf2284e3e344bbac8b9e59a7512
+guid: 3cea41cc47353df4db07888ece957696
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -53,9 +53,9 @@ ScriptedImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
     normalMap: 0
     textureFormat: 0
     maxTextureSize: 0
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639119480267405292
+  platformSettingsDirtyTick: 639119499920588335
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -122,7 +122,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: forest background
+  - name: TitleScreenTutorialBackground
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -132,9 +132,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 600
-      height: 250
-    spriteID: 075b49464bb62a54bb7cee81b291aa09
+      width: 1216
+      height: 512
+    spriteID: 3c2793449d8adeb4c86af1dae3023b26
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -146,21 +146,21 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 839735371
-    name: forest background
+    guid: -2065003114
+    name: TitleScreenTutorialBackground
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: forest background
+    - name: TitleScreenTutorialBackground
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
-        width: 600
-        height: 250
-      spriteId: 075b49464bb62a54bb7cee81b291aa09
+        width: 1216
+        height: 512
+      spriteId: 3c2793449d8adeb4c86af1dae3023b26
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -215,4 +215,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 600, y: 250}
+  canvasSize: {x: 1216, y: 512}
