@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private bool wasGrounded;
     public bool isCrouching;
     private bool canDash = true;
+    private bool dashedInAir;
     private bool isDashing;
     private bool canWallJump;
     private bool OnWallLeft;
@@ -129,13 +130,36 @@ public class PlayerMovement : MonoBehaviour
             wallJumpTimer -= Time.deltaTime;
         }
 
-        if(!canDash) {
+        /*if(!canDash) {
             spriteRenderer.material = cannotDashIndicatorMaterial;
             cooldownTimer -= Time.deltaTime;
 
             if(cooldownTimer <= 0f && isGrounded) {
                 spriteRenderer.material = defaultMaterial;
                 canDash = true;
+            }
+        }*/
+
+        if(!canDash) {
+            spriteRenderer.material = cannotDashIndicatorMaterial;
+
+            if(!dashedInAir && !isGrounded) {
+                dashedInAir = true;
+            }
+
+            if(!dashedInAir) {
+                cooldownTimer -= Time.deltaTime;
+
+                if(cooldownTimer <= 0f) {
+                    spriteRenderer.material = defaultMaterial;
+                    canDash = true;
+                }
+            } else {
+                if(!wasGrounded && isGrounded) {
+                    spriteRenderer.material = defaultMaterial;
+                    canDash = true;
+                    dashedInAir = false;
+                }
             }
         }
 
@@ -162,7 +186,6 @@ public class PlayerMovement : MonoBehaviour
             if(dashTimer <= 0f) {
                 isDashing = false;
                 rb.gravityScale = originalGravityScale;
-                cooldownTimer = dashCooldown;
             }
 
             return;
@@ -191,6 +214,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void updateState()
     {
+        if(!isGrounded) {
+            isCrouching = false;
+            return;
+        }
         isCrouching = crouchAction.action.IsPressed();
     }
 
@@ -297,11 +324,18 @@ public class PlayerMovement : MonoBehaviour
     void StartDash() {
         canDash = false;
         isDashing = true;
+        
+        dashedInAir = !isGrounded;
+
         dashDirection = GetDashDirection().normalized;
         rb.gravityScale = 0f;
 
         dashTimer = dashDuration;
         //ghostTimer = 0f;
+
+        if(!dashedInAir) {
+            cooldownTimer = dashCooldown;
+        }
     }
 
     public bool getIsDashing() {

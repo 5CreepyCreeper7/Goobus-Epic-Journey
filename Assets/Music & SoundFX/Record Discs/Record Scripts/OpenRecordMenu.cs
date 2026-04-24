@@ -55,6 +55,9 @@ public class OpenRecordMenu : MonoBehaviour
         GoobusUI.SetActive(false);
         isMenuOpen = true;
         playerMovementScript.enabled = false;
+        playerMovementScript.GetComponent<PlayerAnimationScript>().ForceIdle();
+        Rigidbody2D rb = playerMovementScript.rb;
+        rb.linearVelocity = Vector2.zero;
     }
 
     public void CloseMenu(GameObject recordMenuPanel) {

@@ -11,6 +11,8 @@ TagManager:
   - RecordPlayer
   - Manager
   - Sign
+  - PlayerPlacement
+  - GroundCheck
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - Panel
   - Blur
   - BG
-  - 
+  - OneWayPlatforms
   - 
   - 
   - 
