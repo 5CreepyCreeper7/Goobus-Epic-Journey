@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      goobus runnning upgrade_0: 7618199160512606565
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      goobdashpalette_0: -6235945089802654578
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: 2
-  damageToPlayer: 0
+  damageToPlayer: 1
 --- !u!114 &3821364201308951879
 MonoBehaviour:
   m_ObjectHideFlags: 0

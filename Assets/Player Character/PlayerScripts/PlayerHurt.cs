@@ -6,10 +6,13 @@ public class PlayerHurt : MonoBehaviour
     private float iFrameDuration = 0.35f; 
     private bool isInvincible = false;
 
+    private Rigidbody2D rb;
+
     private PlayerDied playerDiedScript;
     private HealthScript healthScript;
     private DamageFlash damageFlash;
     private PlayerUI playerUI;
+    private PlayerMovement playerMovement;
 
     private SpriteRenderer spriteRenderer;
 
@@ -19,6 +22,7 @@ public class PlayerHurt : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageFlash = GetComponent<DamageFlash>();
         playerUI = FindFirstObjectByType<PlayerUI>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update() {
@@ -58,5 +62,17 @@ public class PlayerHurt : MonoBehaviour
     private void ResetIFrames() {
         isInvincible = false;
         iFrameDuration = 2f;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy")) {
+            int damageDealt = collision.gameObject.GetComponent<EnemyStats>().damageToPlayer;
+
+            //if (isInvincible || isDashing)
+               // return;
+
+            TakeDamage(damageDealt);
+        }
     }
 }

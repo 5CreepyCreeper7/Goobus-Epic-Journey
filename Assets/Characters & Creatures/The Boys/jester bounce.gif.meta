@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      jester bounce_0: 5249700016095341367
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
