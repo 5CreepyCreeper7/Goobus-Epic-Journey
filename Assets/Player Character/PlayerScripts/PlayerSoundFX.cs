@@ -9,6 +9,8 @@ public class PlayerSoundFX : MonoBehaviour
     public AudioClip deathSound;
     public AudioClip walkSound;
     public AudioClip fallingSound;
+    public AudioClip dashSound;
+    public AudioClip hurtSound;
 
     public float walkSoundMinPitch = 1f;
     public float walkSoundMaxPitch = 2f;
@@ -29,9 +31,17 @@ public class PlayerSoundFX : MonoBehaviour
         StartCoroutine(pitchJumpingSound());
     }
 
+    public void playDashSound() {
+        audioSource.PlayOneShot(dashSound);
+    }
+
     public void playDeathSound() {
         audioSource.pitch = 1f;
         audioSource.PlayOneShot(deathSound);
+    }
+
+    public void playHurtSound() {
+        audioSource.PlayOneShot(hurtSound);
     }
 
     public void playWalkSound() {

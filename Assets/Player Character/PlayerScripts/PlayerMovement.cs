@@ -22,13 +22,14 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded;
     private bool wasGrounded;
     public bool isCrouching;
-    private bool canDash = true;
+    public bool canDash = true;
     private bool dashedInAir;
     private bool isDashing;
     private bool canWallJump;
     private bool OnWallLeft;
     private bool OnWallRight;
     private bool isWallSliding;
+    public bool isLaunched;
     //private bool justWallJumped = false;
     
     // Ground check variables
@@ -130,42 +131,7 @@ public class PlayerMovement : MonoBehaviour
             wallJumpTimer -= Time.deltaTime;
         }
 
-        /*if(!canDash) {
-            spriteRenderer.material = cannotDashIndicatorMaterial;
-            cooldownTimer -= Time.deltaTime;
-
-            if(cooldownTimer <= 0f && isGrounded) {
-                spriteRenderer.material = defaultMaterial;
-                canDash = true;
-            }
-        }*/
-
-        if(!canDash) {
-            spriteRenderer.material = cannotDashIndicatorMaterial;
-
-            if(!dashedInAir && !isGrounded) {
-                dashedInAir = true;
-            }
-
-            if(!dashedInAir) {
-                cooldownTimer -= Time.deltaTime;
-
-                if(cooldownTimer <= 0f) {
-                    spriteRenderer.material = defaultMaterial;
-                    canDash = true;
-                }
-            } else {
-                if(!wasGrounded && isGrounded) {
-                    spriteRenderer.material = defaultMaterial;
-                    canDash = true;
-                    dashedInAir = false;
-                }
-            }
-        }
-
-        if(dashAction.action.WasPressedThisFrame() && canDash && !isCrouching && !isDashing) {
-            StartDash();
-        }
+        HandleDashing();
 
         playerAnimationScript.updateAnimations(direction.x, isGrounded, isCrouching, isDashing, UnityEngine.Random.Range(0, 10000));
     }
@@ -211,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
        
-
     private void updateState()
     {
         if(!isGrounded) {
@@ -221,14 +186,52 @@ public class PlayerMovement : MonoBehaviour
         isCrouching = crouchAction.action.IsPressed();
     }
 
+    private void HandleDashing() {
+        if(!canDash) {
+            setPlayerCannotDashMaterial();
+
+            if(!dashedInAir && !isGrounded) {
+                dashedInAir = true;
+            }
+
+            if(!dashedInAir) {
+                cooldownTimer -= Time.deltaTime;
+
+                if(cooldownTimer <= 0f) {
+                    setPlayerDefaultMaterial();
+                    canDash = true;
+                }
+            } else {
+                if(!wasGrounded && isGrounded) {
+                    setPlayerDefaultMaterial();
+                    canDash = true;
+                    dashedInAir = false;
+                }
+            }
+        }
+
+        if(dashAction.action.WasPressedThisFrame() && canDash && !isCrouching && !isDashing) {
+            StartDash();
+        }
+    }
+
     private void HandleMovement()
     {
-        if(wallJumpTimer > 0f) {
+        if(wallJumpTimer > 0f || isLaunched) {
             return;
         }
 
         float targetVelocityX = direction.x;
         rb.linearVelocity = new Vector2(direction.x * currentMoveSpeed, rb.linearVelocity.y);
+    }
+
+    public void Sprung(float duration) {
+        isLaunched = true;
+        Invoke(nameof(endSprung), duration);
+    }
+
+    public void endSprung() {
+        isLaunched = false;
     }
 
     private void handleMovementSpeed() {
@@ -322,6 +325,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void StartDash() {
+        playerSoundFX.playDashSound();
         canDash = false;
         isDashing = true;
         
@@ -331,7 +335,6 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0f;
 
         dashTimer = dashDuration;
-        //ghostTimer = 0f;
 
         if(!dashedInAir) {
             cooldownTimer = dashCooldown;
@@ -340,6 +343,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool getIsDashing() {
         return isDashing;
+    }
+
+    public void setPlayerDefaultMaterial() {
+        spriteRenderer.material = defaultMaterial;
+    }
+
+    public void setPlayerCannotDashMaterial() {
+        spriteRenderer.material = cannotDashIndicatorMaterial;
     }
 
     private void playWalkSound(Vector2 direction) {

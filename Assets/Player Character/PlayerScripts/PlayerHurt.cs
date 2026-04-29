@@ -13,6 +13,7 @@ public class PlayerHurt : MonoBehaviour
     private DamageFlash damageFlash;
     private PlayerUI playerUI;
     private PlayerMovement playerMovement;
+    private PlayerSoundFX playerSounds;
 
     private SpriteRenderer spriteRenderer;
 
@@ -23,6 +24,7 @@ public class PlayerHurt : MonoBehaviour
         damageFlash = GetComponent<DamageFlash>();
         playerUI = FindFirstObjectByType<PlayerUI>();
         rb = GetComponent<Rigidbody2D>();
+        playerSounds = GetComponent<PlayerSoundFX>();
     }
 
     private void Update() {
@@ -34,6 +36,7 @@ public class PlayerHurt : MonoBehaviour
             return;
         }
 
+        playerSounds.playHurtSound();
         BeginIFrames();
         damageFlash.PlayerFlash();
 

@@ -484,6 +484,8 @@ MonoBehaviour:
   lowJumpMultiplier: 2
   isGrounded: 0
   isCrouching: 0
+  canDash: 1
+  isLaunched: 0
   groundCheckPoint: {fileID: 5195464218469388307}
   groundCheckRadius: 0.1
   groundLayer:
@@ -710,6 +712,8 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: db8c87e338eb60e4aa562e5768406cc1, type: 3}
   walkSound: {fileID: 8300000, guid: 544b8a38fd3c85546b7a07a05398f5fc, type: 3}
   fallingSound: {fileID: 8300000, guid: bc04d5a5c3468e845a49429d6e045747, type: 3}
+  dashSound: {fileID: 8300000, guid: 32b128713a05cc745a0131373c1978af, type: 3}
+  hurtSound: {fileID: 8300000, guid: 019568094385835419f5476c7bdcae58, type: 3}
   walkSoundMinPitch: 1
   walkSoundMaxPitch: 2
   jumpSoundMinPitch: 0.8
