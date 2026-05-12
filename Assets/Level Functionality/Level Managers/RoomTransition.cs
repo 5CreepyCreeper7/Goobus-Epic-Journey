@@ -2,22 +2,13 @@ using UnityEngine;
 
 public class RoomTransition : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private int TargetRoomID;
+    [SerializeField] private int TargetSpawnPointID;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player")) {
-            //RoomManager.Instance.TransitionToNextRoom();
+            RoomManager.Instance.TransitionToRoom(TargetRoomID, TargetSpawnPointID);
         }
     }
 }

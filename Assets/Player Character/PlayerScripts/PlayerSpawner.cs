@@ -5,6 +5,9 @@ public class PlayerSpawner : MonoBehaviour
     public Transform spawnPoint;
     public GameObject playerPrefab;
 
+    private Transform PreviousSpawnPoint;
+    private Transform CurrentSpawnPoint;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
