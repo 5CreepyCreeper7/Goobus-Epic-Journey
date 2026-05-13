@@ -1,11 +1,15 @@
 using UnityEngine;
+using System.Collections;
+using Unity.Cinemachine;
 
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
 
     [SerializeField] private RoomObject[] rooms;
+    [SerializeField] private TransitionAnimation transitionAnimation;
     [SerializeField] private Transform playerPosition;
+    [SerializeField] private CinemachineConfiner2D confiner;
     [SerializeField] private int startingRoomID = 1;
 
     private int currentRoomID;
@@ -38,23 +42,43 @@ public class RoomManager : MonoBehaviour
     }
 
     public void TransitionToRoom(int targetRoomID, int targetSpawnPointID) {
-        if (inTransition) return;
+        if(inTransition) return;
+
+        StartCoroutine(TransitionRoutine(targetRoomID, targetSpawnPointID));
+    }
+
+    private IEnumerator TransitionRoutine(int targetRoomID, int targetSpawnPointID)
+{
+        inTransition = true;
 
         RoomObject targetRoom = GetRoomByID(targetRoomID);
 
-        if (targetRoom == null) return;
+        if (targetRoom == null)
+        {
+            inTransition = false;
+            yield break;
+        }
 
         Transform spawnPoint = targetRoom.GetSpawnPoint(targetSpawnPointID);
 
-        if (spawnPoint == null) return;
+        if (spawnPoint == null)
+        {
+            inTransition = false;
+            yield break;
+        }
 
-        inTransition = true;
+        yield return transitionAnimation.FadeOut();
 
         DisableCurrentRoom();
         EnableNextRoom(targetRoom);
-        playerPosition.position = spawnPoint.position;
 
+        playerPosition.position = spawnPoint.position;
         currentRoom = targetRoom;
+
+        yield return new WaitForSeconds(0.5f);
+
+        yield return transitionAnimation.FadeIn();
+
         inTransition = false;
     }
 
@@ -75,5 +99,7 @@ public class RoomManager : MonoBehaviour
 
     private void EnableNextRoom(RoomObject nextRoom) {
         nextRoom.gameObject.SetActive(true);
+        confiner.BoundingShape2D = nextRoom.CameraBounds;
+        confiner.InvalidateBoundingShapeCache();
     }
 }
