@@ -11522,11 +11522,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6927845315171105859, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
       propertyPath: dashForce
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6927845315171105859, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
       propertyPath: upwardDashForce
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7652627632441760896, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12859,6 +12859,14 @@ PrefabInstance:
     - target: {fileID: 3176783944764135878, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: m_Name
       value: GameManagersForTesting
+      objectReference: {fileID: 0}
+    - target: {fileID: 3176783944764135878, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4236629737256116501, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6719473051258881586, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: m_LocalPosition.x

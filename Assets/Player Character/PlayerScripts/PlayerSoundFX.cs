@@ -21,7 +21,7 @@ public class PlayerSoundFX : MonoBehaviour
     public float walkSoundSpeed = .8f;
     public float jumpSoundSpeed = .8f;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     void Awake() {
         audioSource = GetComponent<AudioSource>();

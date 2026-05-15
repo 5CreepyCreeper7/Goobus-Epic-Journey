@@ -139,13 +139,15 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if(isDashing) {
-            if(dashDirection == Vector2.up) {
-                rb.linearVelocity = dashDirection * upwardDashForce;
-            } else if(dashDirection == Vector2.down) {
-                rb.linearVelocity = dashDirection * upwardDashForce;
+            float currentDashForce;
+
+            if(Mathf.Abs(dashDirection.y) > 0.5f && Mathf.Abs(dashDirection.x) > 0.1f) {
+                currentDashForce = upwardDashForce;
             } else {
-                rb.linearVelocity = dashDirection * dashForce;
+                currentDashForce = dashForce;
             }
+
+            rb.linearVelocity = dashDirection * currentDashForce;
          
             dashTimer -= Time.fixedDeltaTime;
 
@@ -307,21 +309,24 @@ public class PlayerMovement : MonoBehaviour
     }
 
     Vector2 GetDashDirection() {
-        if(lookingUpAction.action.IsPressed()) {
-            return Vector2.up;
-        }
-
-        if(crouchAction.action.IsPressed()) {
-            return Vector2.down;
-        }
-
         float dashX = direction.x;
+        float dashY = 0f;
 
-        if(dashX == 0) {
-            dashX = spriteRenderer.flipX ? -1 : 1;
+        if(lookingUpAction.action.IsPressed()) {
+            dashY = 1f;
+        } else if(crouchAction.action.IsPressed()) {
+            dashY = -1f;
         }
 
-        return new Vector2(dashX, 0);
+        if(dashX == 0f && dashY == 0f) {
+            dashX = spriteRenderer.flipX ? -1f : 1f;
+        }
+
+        if(dashX == 0f && dashY != 0f) {
+            return new Vector2(0f, dashY);
+        }
+
+        return new Vector2(dashX, dashY).normalized;
     }
 
     void StartDash() {
