@@ -53,6 +53,15 @@ public class DialogLogicScript : MonoBehaviour
 
         currentNPC = NPC;
         currentSpeakerPortrait.sprite = speakerPortraits[NPC.speakerIndex];
+
+        Vector3 scale = currentSpeakerPortrait.rectTransform.localScale;
+
+        scale.x = currentNPC.flipSpeakerPortrait
+            ? -Mathf.Abs(scale.x)
+            : Mathf.Abs(scale.x);
+
+        currentSpeakerPortrait.rectTransform.localScale = scale;
+
         dialog = NPC.lines; 
         currentSpeakerName = NPC.currentSpeakerName;
         dialogIndex = 0;

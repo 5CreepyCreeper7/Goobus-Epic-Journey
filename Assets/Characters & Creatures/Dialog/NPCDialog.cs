@@ -12,6 +12,8 @@ public class NPCDialog : MonoBehaviour, IInteractable
 
     public string currentSpeakerName;
 
+    public bool flipSpeakerPortrait = false;
+
     private void Awake() {
         interactionIndicationScript = GetComponent<InteractionIndication>();
     }

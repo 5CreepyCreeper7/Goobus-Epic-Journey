@@ -183,7 +183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6719473051258881586
 Transform:
   m_ObjectHideFlags: 0
@@ -248,6 +248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465b21b367bcd8443bd85679524337f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rooms:
+  - {fileID: 0}
+  - {fileID: 0}
+  transitionAnimation: {fileID: 0}
+  playerPosition: {fileID: 0}
+  confiner: {fileID: 0}
+  startingRoomID: 1
 --- !u!1 &6561839846919282805
 GameObject:
   m_ObjectHideFlags: 0

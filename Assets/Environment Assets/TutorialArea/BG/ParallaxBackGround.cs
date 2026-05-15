@@ -1,38 +1,28 @@
 using UnityEngine;
 
-public class ParallaxScroller : MonoBehaviour
+public class ParallaxLayer : MonoBehaviour
 {
     public Transform cameraTransform;
-    public float[] scrollSpeeds;
+
+    public float horizontalParallax = 0.5f;
+    public float verticalParallax = 0.1f;
 
     private Vector3 lastCameraPosition;
-    private Renderer[] renderers;
 
     void Start()
     {
         lastCameraPosition = cameraTransform.position;
-
-        renderers = new Renderer[transform.childCount];
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            renderers[i] = transform.GetChild(i).GetComponent<Renderer>();
-        }
     }
 
     void LateUpdate()
     {
-        float deltaX = cameraTransform.position.x - lastCameraPosition.x;
+        Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
 
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            float offset = deltaX * scrollSpeeds[i];
-
-            Vector2 currentOffset = renderers[i].material.mainTextureOffset;
-            currentOffset.x += offset;
-
-            renderers[i].material.mainTextureOffset = currentOffset;
-        }
+        transform.position += new Vector3(
+            deltaMovement.x * horizontalParallax,
+            deltaMovement.y * verticalParallax,
+            0f
+        );
 
         lastCameraPosition = cameraTransform.position;
     }
