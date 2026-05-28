@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Senior Project Game.sln"
+    "dotnet.defaultSolution": "Senior Project Game.slnx"
 }
