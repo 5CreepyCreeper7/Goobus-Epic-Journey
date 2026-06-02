@@ -24,9 +24,22 @@ public class RecordMenuLogic : MonoBehaviour
     public Sprite pauseIcon;
     public Sprite playIcon;
 
+    [Header("Record Arm Settings")]
     public float armInitialAngle = 0f;
     public float armTargetAngle = -50f;
+    public float currentArmTargetAngle = 0f;
     public float armRotationSpeed = 100f;
+
+    [Header("Record Disc Settings")]
+    public float maxSpinSpeed = 100f;
+    public float spinAcceleration = 4f;
+    public float spinDeceleration = 2f;
+
+    private float currentSpinSpeed = 0f;
+    private bool shouldSpin = false;
+
+    private float lastSliderValue = 0f;
+    public float seekSpinMultiplier = 200f;
 
     private bool moveArm = false;
     private bool isPaused = false;
@@ -43,9 +56,12 @@ public class RecordMenuLogic : MonoBehaviour
     }
 
     private void Update() {
-        if(!isPaused) {
+        if(isDraggingSlider) {
+            SeekingRecordSpinEffect();
+        } else {
             RecordSpinning();
         }
+        
 
         UpdateProgressBar();
 
@@ -81,11 +97,10 @@ public class RecordMenuLogic : MonoBehaviour
 
         audioSource.clip = songs[recordIndex];
         getTotalTime();
-        audioSource.Play();
 
         HighlightCurrentSong(recordIndex);
 
-        StartArmMovement();
+        StartArmMovement(armTargetAngle);
     }
 
     public void StopCurrentRecord() {
@@ -93,6 +108,9 @@ public class RecordMenuLogic : MonoBehaviour
             audioSource.Stop();
             audioSource.clip = null;
         }
+
+        shouldSpin = false;
+        currentSpinSpeed = 0f;
 
         isPaused = false;
 
@@ -124,25 +142,65 @@ public class RecordMenuLogic : MonoBehaviour
     }
 
     private void RecordSpinning() {
-        if(spinningRecordImage.enabled) {
-            spinningRecordImage.transform.Rotate(0f, 0f, -100f * Time.deltaTime);
+        if(!spinningRecordImage.enabled) {
+            return;
         }
+
+        float targetSpinSpeed = audioSource.isPlaying ? maxSpinSpeed : 0f;
+
+        currentSpinSpeed = Mathf.Lerp(currentSpinSpeed, targetSpinSpeed, (shouldSpin ? spinAcceleration : spinDeceleration) * Time.deltaTime);
+
+        spinningRecordImage.transform.Rotate(0f, 0f, currentSpinSpeed * Time.deltaTime);
+    }
+
+    private void SeekingRecordSpinEffect() {
+        if(!isDraggingSlider || !spinningRecordImage.enabled) {
+            return;
+        }
+
+        float sliderDelta = ProgressBar.value - lastSliderValue;
+
+        float seekSpin = sliderDelta * seekSpinMultiplier;
+
+        spinningRecordImage.transform.Rotate(0f, 0f, seekSpin * Time.deltaTime);
+
+        lastSliderValue = ProgressBar.value;
     }
 
     private void RotateArm() {
         float currentZ = recordArmImage.transform.localEulerAngles.z;
-        float newZ = Mathf.MoveTowardsAngle(currentZ, armTargetAngle, armRotationSpeed * Time.deltaTime);
+        float newZ = Mathf.MoveTowardsAngle(currentZ, currentArmTargetAngle, armRotationSpeed * Time.deltaTime);
 
         recordArmImage.transform.localEulerAngles = new Vector3(0, 0, newZ);
 
-        if(Mathf.Abs(Mathf.DeltaAngle(newZ, armTargetAngle)) < 0.1f) {
+        if(Mathf.Abs(Mathf.DeltaAngle(newZ, currentArmTargetAngle)) < 0.1f) {
             moveArm = false;
 
-            if (EighthNoteParticles != null && audioSource.isPlaying) {
-                EighthNoteParticles.Play();
-            }
-            if (QuarterNoteParticles != null && audioSource.isPlaying) {
-                QuarterNoteParticles.Play();
+            recordArmImage.transform.localEulerAngles = new Vector3(0, 0, currentArmTargetAngle);
+
+            if(currentArmTargetAngle == armTargetAngle){
+                if(!isPaused) {
+                    if(audioSource.time > 0f)
+                    {
+                        audioSource.UnPause();
+                        shouldSpin = true;
+                    }
+                    else
+                    {
+                        audioSource.Play();
+                        shouldSpin = true;
+                    }
+                }
+
+                if(EighthNoteParticles != null)
+                {
+                    EighthNoteParticles.Play();
+                }
+
+                if(QuarterNoteParticles != null)
+                {
+                    QuarterNoteParticles.Play();
+                }
             }
         }
     }
@@ -152,7 +210,8 @@ public class RecordMenuLogic : MonoBehaviour
         moveArm = false;
     }
 
-    public void StartArmMovement() {
+    public void StartArmMovement(float targetAngle) {
+        currentArmTargetAngle = targetAngle;
         moveArm = true;
     }
 
@@ -163,8 +222,10 @@ public class RecordMenuLogic : MonoBehaviour
 
         if(audioSource.isPlaying) {
             audioSource.Pause();
+            shouldSpin = false;
             isPaused = true;
             updatePauseIcon();
+            StartArmMovement(armInitialAngle);
             if(EighthNoteParticles != null && EighthNoteParticles.isPlaying) {
                 EighthNoteParticles.Stop();
             }
@@ -172,9 +233,9 @@ public class RecordMenuLogic : MonoBehaviour
                 QuarterNoteParticles.Stop();
             }
         } else {
-            audioSource.UnPause();
             isPaused = false;
             updatePauseIcon();
+            StartArmMovement(armTargetAngle);
             if(EighthNoteParticles != null) {
                 EighthNoteParticles.Play();
             }
@@ -196,6 +257,7 @@ public class RecordMenuLogic : MonoBehaviour
 
     public void OnSliderPointerDown() {
         isDraggingSlider = true;
+        lastSliderValue = ProgressBar.value;
     }
 
     public void OnSliderPointerUp() {
@@ -207,7 +269,14 @@ public class RecordMenuLogic : MonoBehaviour
 
     public void updateTimeElapsed() {
         if(audioSource.clip != null) {
-            float currentTime = audioSource.time;
+            float currentTime;
+
+            if(isDraggingSlider) {
+                currentTime = ProgressBar.value * audioSource.clip.length;
+            } else {
+                currentTime = audioSource.time;
+            }
+
             timeElapsedText.text = FormatTime(currentTime);
         }
     }

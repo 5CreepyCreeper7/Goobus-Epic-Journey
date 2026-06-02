@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
 
     // Movement variables
+    [Header("Movement Settings")]
     public float currentMoveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float lowJumpMultiplier = 2f;
 
     // State bool variables
+    [Header("State Variables")]
     public bool isGrounded;
     private bool wasGrounded;
     public bool isCrouching;
@@ -33,16 +35,19 @@ public class PlayerMovement : MonoBehaviour
     //private bool justWallJumped = false;
     
     // Ground check variables
+    [Header("Ground Check Settings")]
     [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private float groundCheckRadius = 0.1f;
     [SerializeField] private LayerMask groundLayer;
 
     // Wall check variables
+    [Header("Wall Check Settings")]
     [SerializeField] private Transform wallLeftCheckPoint;
     [SerializeField] private Transform wallRightCheckPoint;
     [SerializeField] private float wallCheckRadius = 0.1f;
 
     // Dash variables
+    [Header("Dash Settings")]
     [SerializeField] private float dashForce = 20f;
     [SerializeField] private float upwardDashForce = 10f;
     [SerializeField] private float dashDuration = 0.2f;
@@ -61,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 direction;
 
     // Input actions
+    [Header("Input Actions")]
     public InputActionReference moveAction;
     public InputActionReference jumpAction;
     public InputActionReference sprintAction;
