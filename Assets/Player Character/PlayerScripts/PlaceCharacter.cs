@@ -2,30 +2,17 @@ using UnityEngine;
 
 public class PlaceCharacter : MonoBehaviour
 {
-    private GameObject PlacementPoint;
-    private GameObject GroundCheck;
-
-    void Start()
+    public void PlacePlayer()
     {
-        PlacementPoint = GameObject.FindGameObjectWithTag("PlayerPlacement");
-        GroundCheck = GameObject.FindGameObjectWithTag("GroundCheck");
-    }
+        Transform spawnPoint = RoomManager.Instance.GetCurrentSpawnPoint();
 
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateAcceptablePoint();
-    }
-
-    private void UpdateAcceptablePoint() {
-        if(PlacementPoint != null && GroundCheck != null && GetComponent<PlayerMovement>().isGrounded) {
-            PlacementPoint.transform.position = GroundCheck.transform.position;
+        if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.position;
         }
-    }
-
-    public void PlacePlayer() {
-        if(PlacementPoint != null) {
-            transform.position = PlacementPoint.transform.position;
+        else
+        {
+            Debug.LogWarning("No current spawn point found.");
         }
     }
 }

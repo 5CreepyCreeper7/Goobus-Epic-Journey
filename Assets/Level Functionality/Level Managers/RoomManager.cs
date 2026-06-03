@@ -13,6 +13,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private int startingRoomID = 1;
 
     private int currentRoomID;
+    private int currentSpawnPointID;
     private RoomObject currentRoom;
     private bool inTransition = false;
 
@@ -36,6 +37,13 @@ public class RoomManager : MonoBehaviour
 
         if (currentRoom != null) {
             currentRoom.gameObject.SetActive(true);
+            currentRoomID = startingRoomID;
+            currentSpawnPointID = 1;
+
+            if (confiner != null && currentRoom.CameraBounds != null){
+                confiner.BoundingShape2D = currentRoom.CameraBounds;
+                confiner.InvalidateBoundingShapeCache();
+            }
         } else {
             Debug.LogError("Failed to initialize the starting room.");
         }
@@ -74,12 +82,22 @@ public class RoomManager : MonoBehaviour
 
         playerPosition.position = spawnPoint.position;
         currentRoom = targetRoom;
+        currentRoomID = targetRoomID;
+        currentSpawnPointID = targetSpawnPointID;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return null;
 
+        confiner.BoundingShape2D = targetRoom.CameraBounds;
+        confiner.InvalidateBoundingShapeCache();
+
+        Physics2D.SyncTransforms();
+
+        yield return new WaitForEndOfFrame();
+        
         yield return transitionAnimation.FadeIn();
 
         inTransition = false;
+        currentSpawnPointID = targetSpawnPointID;
     }
 
     private RoomObject GetRoomByID(int roomID) {
@@ -99,7 +117,17 @@ public class RoomManager : MonoBehaviour
 
     private void EnableNextRoom(RoomObject nextRoom) {
         nextRoom.gameObject.SetActive(true);
-        confiner.BoundingShape2D = nextRoom.CameraBounds;
-        confiner.InvalidateBoundingShapeCache();
     }
+
+    public int GetCurrentSpawnPointID() {
+        return  currentSpawnPointID;
+    }
+
+    public Transform GetCurrentSpawnPoint() {
+        if (currentRoom == null)
+            return null;
+
+        return currentRoom.GetSpawnPoint(currentSpawnPointID);
+    }
+
 }

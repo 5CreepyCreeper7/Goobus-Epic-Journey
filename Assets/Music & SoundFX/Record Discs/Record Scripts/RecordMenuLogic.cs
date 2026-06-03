@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class RecordMenuLogic : MonoBehaviour
 {
@@ -23,6 +24,23 @@ public class RecordMenuLogic : MonoBehaviour
     private Image pauseButtonImage;
     public Sprite pauseIcon;
     public Sprite playIcon;
+
+    public Button shuffleButton;
+    private Image shuffleButtonImage;
+    public Sprite shuffleIcon;
+    public Sprite shuffleActiveIcon;
+
+    public Button loopButton;
+    private Image loopButtonImage;
+    public Sprite loopIcon;
+    public Sprite loopActiveIcon;
+
+    public bool shuffling = false;
+    public bool looping = false;
+    private int currentRecordIndex = -1;
+
+    private List<int> songHistory = new List<int>();
+    private int historyIndex = -1;
 
     [Header("Record Arm Settings")]
     public float armInitialAngle = 0f;
@@ -48,10 +66,20 @@ public class RecordMenuLogic : MonoBehaviour
     private AudioSource audioSource;
     private AudioSource mainAudioSource;
 
+    [Header("Visualizer Settings")]
+    public float pulseIntensity = 1.5f;
+    public float pulseSmoothness = 5f;
+
+    private Vector3 recordBaseScale;
+    private float[] audioSamples = new float[512];
+
     private void Awake() {
         audioSource = GameObject.FindGameObjectWithTag("RecordPlayer").GetComponent<AudioSource>();
         mainAudioSource = GameObject.FindGameObjectWithTag("Manager").GetComponent<AudioSource>();
         pauseButtonImage = pauseButton.GetComponent<Image>();
+        shuffleButtonImage = shuffleButton.GetComponent<Image>();
+        loopButtonImage = loopButton.GetComponent<Image>();
+        recordBaseScale = spinningRecordImage.transform.localScale;
         ProgressBar.value = 0f;
     }
 
@@ -62,6 +90,7 @@ public class RecordMenuLogic : MonoBehaviour
             RecordSpinning();
         }
         
+        PulseRecord();
 
         UpdateProgressBar();
 
@@ -70,9 +99,15 @@ public class RecordMenuLogic : MonoBehaviour
         }
 
         updateTimeElapsed();
+
+        CheckIfSongEnded();
     }
 
     public void PlayRecord(int recordIndex) {
+        PlayRecord(recordIndex, true);
+    }
+
+    public void PlayRecord(int recordIndex, bool updateHistory) {
         Debug.Log("Clicked record index: " + recordIndex);
 
         if(recordIndex < 0 || recordIndex >= songs.Length || recordIndex >= recordSprites.Length) {
@@ -83,6 +118,11 @@ public class RecordMenuLogic : MonoBehaviour
         Debug.Log("Song at index is: " + songs[recordIndex]);
         Debug.Log("Sprite at index is: " + recordSprites[recordIndex]);
 
+        currentRecordIndex = recordIndex;
+
+        if(updateHistory) {
+            AddToHistory(recordIndex);
+        }
 
         isPaused = false;
 
@@ -126,7 +166,91 @@ public class RecordMenuLogic : MonoBehaviour
             QuarterNoteParticles.Stop();
         }
 
+        StartArmMovement(armInitialAngle);
+
         spinningRecordImage.enabled = false;
+    }
+
+    private void CheckIfSongEnded() {
+        if(audioSource.clip == null || isPaused || moveArm) {
+            return;
+        }
+
+        if(!audioSource.isPlaying && audioSource.time > 0f) {
+            if(shuffling) {
+                PlayRandomRecord();
+            } else if(looping){
+                PlayRecord(currentRecordIndex);
+            } else {
+                StopCurrentRecord();
+            }
+        }
+    }
+
+    private void PlayRandomRecord() {
+        if(songs.Length == 0) {
+            Debug.LogError("No songs available to play.");
+            return;
+        }
+
+        int randomIndex = Random.Range(0, songs.Length);
+
+        if(songs.Length > 1) {
+            while(randomIndex == currentRecordIndex) {
+                randomIndex = Random.Range(0, songs.Length);
+            }
+        }
+        PlayRecord(randomIndex);
+    }
+
+    public void SkipToNextRecord() {
+        if(songs.Length == 0) {
+            return;
+        }
+
+        if(shuffling) {
+            PlayRandomRecord();
+            return;
+        }
+
+        int nextIndex = currentRecordIndex + 1;
+
+        if(nextIndex >= songs.Length) {
+            nextIndex = 0;
+        }
+
+        PlayRecord(nextIndex);
+    }
+
+    public void SkipToPreviousRecord() {
+        if(songHistory.Count > 1 && historyIndex > 0) {
+            historyIndex--;
+
+            PlayRecord(songHistory[historyIndex], false);
+            return;
+        }
+
+        if(!shuffling) {
+            int previousIndex = currentRecordIndex - 1;
+
+            if(previousIndex < 0) {
+                previousIndex = songs.Length - 1;
+            }
+
+            PlayRecord(previousIndex);
+        }
+    }
+
+    public void ToggleShuffle() {
+        shuffling = !shuffling;
+        audioSource.loop = false;
+        updateShuffleIcon();
+    }
+
+    public void ToggleLoop() {
+        looping = !looping;
+        audioSource.loop = looping;
+        updateLoopIcon();
     }
 
     public void ResumeMainAudio() {
@@ -165,6 +289,36 @@ public class RecordMenuLogic : MonoBehaviour
         spinningRecordImage.transform.Rotate(0f, 0f, seekSpin * Time.deltaTime);
 
         lastSliderValue = ProgressBar.value;
+    }
+
+    private void PulseRecord() {
+        if(audioSource.clip == null || !audioSource.isPlaying) {
+            spinningRecordImage.transform.localScale = Vector3.Lerp(
+                spinningRecordImage.transform.localScale,
+                recordBaseScale,
+                pulseSmoothness * Time.deltaTime
+            );
+
+            return;
+        }
+
+        audioSource.GetOutputData(audioSamples, 0);
+
+        float sum = 0f;
+
+        for(int i = 0; i < audioSamples.Length; i++) {
+            sum += Mathf.Abs(audioSamples[i]);
+        }
+
+        float average = sum / audioSamples.Length;
+
+        float targetScale = 1f + average * pulseIntensity;
+
+        spinningRecordImage.transform.localScale = Vector3.Lerp(
+            spinningRecordImage.transform.localScale,
+            recordBaseScale * targetScale,
+            pulseSmoothness * Time.deltaTime
+        );
     }
 
     private void RotateArm() {
@@ -213,6 +367,14 @@ public class RecordMenuLogic : MonoBehaviour
     public void StartArmMovement(float targetAngle) {
         currentArmTargetAngle = targetAngle;
         moveArm = true;
+    }
+
+    private void AddToHistory(int recordIndex) {
+        if(historyIndex < songHistory.Count - 1) {
+            songHistory.RemoveRange(historyIndex + 1, songHistory.Count - historyIndex - 1);
+        }
+        songHistory.Add(recordIndex);
+        historyIndex = songHistory.Count - 1;
     }
 
     public void PauseButton() {
@@ -296,6 +458,22 @@ public class RecordMenuLogic : MonoBehaviour
         }
     }
 
+    public void updateShuffleIcon() {
+        if(shuffling) {
+            shuffleButtonImage.sprite = shuffleActiveIcon;
+        } else {
+            shuffleButtonImage.sprite = shuffleIcon;
+        }
+    }
+
+    public void updateLoopIcon() {
+        if(looping) {
+            loopButtonImage.sprite = loopActiveIcon;
+        } else {
+            loopButtonImage.sprite = loopIcon;
+        }
+    }
+
     private string FormatTime(float time) {
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);
@@ -338,5 +516,13 @@ public class RecordMenuLogic : MonoBehaviour
         ResetSongColors();
         ResetRecordSprite();
         ResetTimeText();
+        shuffleButtonImage.sprite = shuffleIcon;
+        loopButtonImage.sprite = loopIcon;
+        shuffling = false;
+        looping = false;
+        audioSource.loop = false;
+        songHistory.Clear();
+        historyIndex = -1;
+        currentRecordIndex = -1;
     }
 }

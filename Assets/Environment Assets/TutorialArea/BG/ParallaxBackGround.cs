@@ -7,23 +7,32 @@ public class ParallaxLayer : MonoBehaviour
     public float horizontalParallax = 0.5f;
     public float verticalParallax = 0.1f;
 
-    private Vector3 lastCameraPosition;
+    private Vector3 startingLocalPosition;
+    private Vector3 startingCameraPosition;
 
-    void Start()
+    private void Awake()
     {
-        lastCameraPosition = cameraTransform.position;
+        startingLocalPosition = transform.localPosition;
     }
 
-    void LateUpdate()
+    private void OnEnable()
     {
-        Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
+        if (cameraTransform != null)
+        {
+            startingCameraPosition = cameraTransform.position;
+        }
+    }
 
-        transform.position += new Vector3(
+    private void LateUpdate()
+    {
+        if (cameraTransform == null) return;
+
+        Vector3 deltaMovement = cameraTransform.position - startingCameraPosition;
+
+        transform.localPosition = startingLocalPosition + new Vector3(
             deltaMovement.x * horizontalParallax,
             deltaMovement.y * verticalParallax,
             0f
         );
-
-        lastCameraPosition = cameraTransform.position;
     }
 }
