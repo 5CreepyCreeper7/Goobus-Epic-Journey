@@ -13,6 +13,10 @@ TagManager:
   - Sign
   - PlayerPlacement
   - GroundCheck
+  - Grass
+  - Dirt
+  - Rock
+  - Wood
   layers:
   - Default
   - TransparentFX
@@ -63,3 +67,4 @@ TagManager:
   - Default
   - BG
   - Ground
+  m_MigratedRenderPipelines: []
