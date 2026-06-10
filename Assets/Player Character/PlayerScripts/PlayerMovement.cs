@@ -347,6 +347,8 @@ public class PlayerMovement : MonoBehaviour
 
         dashTimer = dashDuration;
 
+        CameraVariance.instance.ShakeCamera(dashDirection, 0.5f);
+
         if(!dashedInAir) {
             cooldownTimer = dashCooldown;
         }
