@@ -1,38 +1,20 @@
 using UnityEngine;
 
-public class ParallaxLayer : MonoBehaviour
+public class ParallaxTextureScroller : MonoBehaviour
 {
-    public Transform cameraTransform;
+    private float startPos;
+    public GameObject cam;
+    public float parallaxEffect;
 
-    public float horizontalParallax = 0.5f;
-    public float verticalParallax = 0.1f;
-
-    private Vector3 startingLocalPosition;
-    private Vector3 startingCameraPosition;
-
-    private void Awake()
+    void Start()
     {
-        startingLocalPosition = transform.localPosition;
+        startPos = transform.position.x;
     }
 
-    private void OnEnable()
+    void FixedUpdate()
     {
-        if (cameraTransform != null)
-        {
-            startingCameraPosition = cameraTransform.position;
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (cameraTransform == null) return;
-
-        Vector3 deltaMovement = cameraTransform.position - startingCameraPosition;
-
-        transform.localPosition = startingLocalPosition + new Vector3(
-            deltaMovement.x * horizontalParallax,
-            deltaMovement.y * verticalParallax,
-            0f
-        );
+        float distance = cam.transform.position.x * parallaxEffect;
+        
+        transform.position = new Vector3(startPos + distance, transform.position.y, transform.position.z);
     }
 }

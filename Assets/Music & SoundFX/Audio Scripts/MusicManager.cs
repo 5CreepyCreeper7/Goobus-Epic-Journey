@@ -45,6 +45,9 @@ public class MusicManager : MonoBehaviour
             case "SampleScene":
                 StartMusicWithFade(Lvl1Theme, 2f);
                 break;
+            case "Level 1 - Castle":
+                StartMusicWithFade(Lvl1Theme, 2f);
+                break;
             default:
                 musicSource.Stop();
                 break;
