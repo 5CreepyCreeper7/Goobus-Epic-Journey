@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private float cooldownTimer;
     private float dashTimer;
 
-    private Vector2 dashDirection;
+    public Vector2 dashDirection;
 
     [SerializeField] private Material cannotDashIndicatorMaterial;
     [SerializeField] private Material defaultMaterial;
@@ -162,6 +162,10 @@ public class PlayerMovement : MonoBehaviour
                 rb.gravityScale = originalGravityScale;
             }
 
+            return;
+        }
+
+        if(isLaunched) {
             return;
         }
 
@@ -347,11 +351,24 @@ public class PlayerMovement : MonoBehaviour
 
         dashTimer = dashDuration;
 
-        CameraVariance.instance.ShakeCamera(dashDirection, 0.5f);
+        CameraVariance.instance.ShakeCamera(dashDirection, 0.1f);
 
         if(!dashedInAir) {
             cooldownTimer = dashCooldown;
         }
+    }
+
+    public void ReboundFromDash(Vector2 dashDirection, float reboundForce, float controlLockDuration = 0.15f) {
+        isDashing = false;
+        dashTimer = 0f;
+        rb.gravityScale = originalGravityScale;
+
+        isLaunched = true;
+        CancelInvoke(nameof(endSprung));
+
+        rb.linearVelocity = -dashDirection.normalized * reboundForce;
+
+        Invoke(nameof(endSprung), controlLockDuration);
     }
 
     public bool getIsDashing() {
@@ -364,6 +381,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void setPlayerCannotDashMaterial() {
         spriteRenderer.material = cannotDashIndicatorMaterial;
+    }
+
+    public void resetDash() {
+        canDash = true;
+        setPlayerDefaultMaterial();
     }
 
     private void playWalkSound(Vector2 direction) {

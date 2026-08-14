@@ -53,6 +53,9 @@ public class InteractionIndication : MonoBehaviour
             case "Sign":
                 text.text = "Read";
                 break;
+            case "MusicTest":
+                text.text = "Toggle Anger";
+                break;
             default:
                 text.text = "Inspect";
                 break;

@@ -19,6 +19,7 @@ public class PlayerHurt : MonoBehaviour
 
     private void Awake() {
         playerDiedScript = GetComponent<PlayerDied>();
+        playerMovement = GetComponent<PlayerMovement>();
         healthScript = GetComponent<HealthScript>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         damageFlash = GetComponent<DamageFlash>();
@@ -32,7 +33,7 @@ public class PlayerHurt : MonoBehaviour
     }
 
     public void TakeDamage(int damageAmount) {
-        if(isInvincible) {
+        if(isInvincible || playerMovement.getIsDashing()) {
             return;
         }
 
@@ -64,7 +65,7 @@ public class PlayerHurt : MonoBehaviour
 
     private void ResetIFrames() {
         isInvincible = false;
-        iFrameDuration = 2f;
+        iFrameDuration = iFrameDuration;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
