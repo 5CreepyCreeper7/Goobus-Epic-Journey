@@ -21,18 +21,26 @@ public class DashAttack : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if(!collision.CompareTag("Enemy") || !playerMovement.getIsDashing() || isRebounding) 
+        TryDamageEnemy(collision);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision) {
+        TryDamageEnemy(collision);
+    }
+
+    private void TryDamageEnemy(Collider2D collision) {
+        if(!collision.CompareTag("EnemyVulnerableBox") || !playerMovement.getIsDashing() || isRebounding) 
             return;
 
-        EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
+        EnemyStats enemyStats = collision.GetComponentInParent<EnemyStats>();
 
         if(enemyStats == null) 
             return;
-    
+
         enemyStats.enemyHealth -= AttackDamage;
         playerSounds.playDashAttackSound();
-        
-        DamageFlash damageFlash = collision.GetComponent<DamageFlash>();
+
+        DamageFlash damageFlash = collision.GetComponentInParent<DamageFlash>();
 
         if (damageFlash != null) 
             damageFlash.EnemyFlash();
@@ -40,7 +48,7 @@ public class DashAttack : MonoBehaviour
         Vector2 dashDirection = playerMovement.dashDirection;
 
         if (dashDirection == Vector2.zero) {
-            dashDirection = transform.right;;
+            dashDirection = transform.right;
         }
         
         StartCoroutine(ImpactPauseThenRebound(dashDirection));
@@ -48,7 +56,6 @@ public class DashAttack : MonoBehaviour
         Debug.Log("Enemy hit by dash attack!" + " Enemy health: " + enemyStats.enemyHealth);
 
         playerMovement.resetDash();
-        
     }
 
     IEnumerator ImpactPauseThenRebound(Vector2 dashDirection) {

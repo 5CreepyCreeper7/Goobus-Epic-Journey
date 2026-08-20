@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHurt : MonoBehaviour
 {
+    private float iFrames = 0.35f;
     private float iFrameDuration = 0.35f; 
     private bool isInvincible = false;
 
@@ -65,17 +66,13 @@ public class PlayerHurt : MonoBehaviour
 
     private void ResetIFrames() {
         isInvincible = false;
-        iFrameDuration = iFrameDuration;
+        iFrameDuration = iFrames;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Enemy")) {
-            int damageDealt = collision.gameObject.GetComponent<EnemyStats>().damageToPlayer;
-
-            //if (isInvincible || isDashing)
-               // return;
-
+            int damageDealt = collision.gameObject.GetComponentInParent<EnemyStats>().damageToPlayer;
             TakeDamage(damageDealt);
         }
     }

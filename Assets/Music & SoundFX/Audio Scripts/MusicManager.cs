@@ -78,7 +78,7 @@ public class MusicManager : MonoBehaviour
         fadeCoroutine = null;
     }
 
-    private void StartMusicWithFade(AudioClip clip, float duration)
+    public void StartMusicWithFade(AudioClip clip, float duration)
     {
         if (musicSource.clip == clip && musicSource.isPlaying) return;
 
@@ -88,6 +88,10 @@ public class MusicManager : MonoBehaviour
         musicSource.clip = clip;
         musicSource.loop = true;
         fadeCoroutine = StartCoroutine(FadeInMusicCoroutine(duration));
+    }
+
+    public AudioClip CurrentClip {
+        get { return musicSource.clip; }
     }
 }
 
