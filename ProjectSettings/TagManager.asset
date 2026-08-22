@@ -19,6 +19,8 @@ TagManager:
   - Wood
   - MusicTest
   - EnemyVulnerableBox
+  - Berries
+  - MainAudio
   layers:
   - Default
   - TransparentFX

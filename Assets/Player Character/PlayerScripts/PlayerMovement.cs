@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private float walkTimer = 0f;
     private float walkingInterval = 0.5f;
     private float wallJumpTimer = 0.25f;
+    [SerializeField] private float wallJumpTimerDuration = 0.25f;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
 
@@ -32,7 +33,8 @@ public class PlayerMovement : MonoBehaviour
     private bool OnWallRight;
     private bool isWallSliding;
     public bool isLaunched;
-    //private bool justWallJumped = false;
+    public bool controlsLocked;
+    private bool jumpQueued;
     
     // Ground check variables
     [Header("Ground Check Settings")]
@@ -52,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float upwardDashForce = 10f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private float VerticalDashClamp = 0.4f;
 
     private float cooldownTimer;
     private float dashTimer;
@@ -79,7 +82,6 @@ public class PlayerMovement : MonoBehaviour
     private PlayerAnimationScript playerAnimationScript;
     private PlayerSoundFX playerSoundFX;
     private BoxCollider2D boxCollider;
-    private GameObject currentInteractable;
 
     void Awake()
     {
@@ -105,13 +107,20 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        wasGrounded = isGrounded;
+        if(controlsLocked)
+        {
+            float  automaticMovement = 0f;
 
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+            if(Mathf.Abs(rb.linearVelocity.x) > 0.01f)
+            {
+                automaticMovement = Mathf.Sign(rb.linearVelocity.x);
+            }
 
-        OnWallLeft = Physics2D.OverlapCircle(wallLeftCheckPoint.position, wallCheckRadius, groundLayer);
-        OnWallRight = Physics2D.OverlapCircle(wallRightCheckPoint.position, wallCheckRadius, groundLayer);
-        canWallJump = OnWallLeft || OnWallRight;
+            playerAnimationScript.updateAnimations(direction.x, isGrounded, false, false, UnityEngine.Random.Range(0, 10000));
+            UpdateAutomaticFacing(automaticMovement);
+
+            return;
+        }
 
         direction = moveAction.action.ReadValue<Vector2>();
 
@@ -120,18 +129,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         playWalkSound(direction);
-        
         flipSprite();
 
-        if(canWallJump && !isGrounded) {
-            handleWallJumping();
-        } else {
-            handleJumping(); 
+        if(jumpAction.action.WasPressedThisFrame())
+        {
+            jumpQueued = true;
         }
         
         updateState();   
         handleMovementSpeed(); 
-        wallSlide();
 
         if(wallJumpTimer > 0f) {
             wallJumpTimer -= Time.deltaTime;
@@ -144,10 +150,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(controlsLocked)
+        {
+            return;
+        }
+        
+        wasGrounded = isGrounded;
+        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+
+        OnWallLeft = Physics2D.OverlapCircle(wallLeftCheckPoint.position, wallCheckRadius, groundLayer);
+        OnWallRight = Physics2D.OverlapCircle(wallRightCheckPoint.position, wallCheckRadius, groundLayer);
+        canWallJump = OnWallLeft || OnWallRight;
+
         if(isDashing) {
             float currentDashForce;
 
-            if(Mathf.Abs(dashDirection.y) > 0.5f && Mathf.Abs(dashDirection.x) > 0.1f) {
+            if(Mathf.Abs(dashDirection.y) > 0.1f) {
                 currentDashForce = upwardDashForce;
             } else {
                 currentDashForce = dashForce;
@@ -160,16 +178,28 @@ public class PlayerMovement : MonoBehaviour
             if(dashTimer <= 0f) {
                 isDashing = false;
                 rb.gravityScale = originalGravityScale;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * VerticalDashClamp);
             }
 
+            jumpQueued = false;
             return;
         }
 
         if(isLaunched) {
+            jumpQueued = false;
             return;
         }
 
+        if(canWallJump && !isGrounded) {
+            handleWallJumping();
+        } else {
+            handleJumping(); 
+        }
+
+        jumpQueued = false;
+
         HandleMovement();
+        wallSlide();
         
         if(!isDashing && !isWallSliding) {
             ControlledJump();
@@ -178,7 +208,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void flipSprite() {
         if(!isCrouching) {
-                if (direction.x > 0)
+            if (direction.x > 0)
             {
                 this.spriteRenderer.flipX = false;
             }
@@ -186,6 +216,17 @@ public class PlayerMovement : MonoBehaviour
             {
                 this.spriteRenderer.flipX = true;
             }
+        }
+    }
+
+    private void UpdateAutomaticFacing(float HorizontalMovement)
+    {
+        if(HorizontalMovement > 0f)
+        {
+            spriteRenderer.flipX = false;
+        } else if (HorizontalMovement < 0f)
+        {
+            spriteRenderer.flipX = true;
         }
     }
        
@@ -233,7 +274,6 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        float targetVelocityX = direction.x;
         rb.linearVelocity = new Vector2(direction.x * currentMoveSpeed, rb.linearVelocity.y);
     }
 
@@ -264,17 +304,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void handleJumping()
     {
-        if (jumpAction.action.WasPressedThisFrame() && isGrounded && !isCrouching && !isDashing)
+        if (jumpQueued && isGrounded && !isCrouching && !isDashing)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             playerSoundFX.playJumpSound();
         }
-
-        /*if(rb.linearVelocity.y < 0) {
-            playerSoundFX.playFallingSound();
-        } else {
-            playerSoundFX.stopFallingSound();
-        }*/
     }
 
     private void ControlledJump() {
@@ -304,11 +338,11 @@ public class PlayerMovement : MonoBehaviour
 
         rb.linearVelocity = new Vector2(horizontalForce, verticalForce);
         playerSoundFX.playJumpSound();
-        wallJumpTimer = 0.25f;
+        wallJumpTimer = wallJumpTimerDuration;
     }
 
     private void handleWallJumping() {
-        if (jumpAction.action.WasPressedThisFrame() && canWallJump && !isCrouching && !isGrounded)
+        if (jumpQueued && canWallJump && !isCrouching && !isGrounded)
         {
             if(OnWallLeft) {
                 wallJump(new Vector2(1f, 0f));
@@ -346,7 +380,7 @@ public class PlayerMovement : MonoBehaviour
         
         dashedInAir = !isGrounded;
 
-        dashDirection = GetDashDirection().normalized;
+        dashDirection = GetDashDirection();
         rb.gravityScale = 0f;
 
         dashTimer = dashDuration;
@@ -401,15 +435,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.CompareTag("NPC") || collision.CompareTag("RecordPlayer")) {
-            currentInteractable = collision.gameObject;
-        }
-    }
+    public void SetControlsLocked(bool locked) {
+        controlsLocked = locked;
 
-    private void OnTriggerExit2D(Collider2D collision) {
-        if(collision.gameObject == currentInteractable) {
-            currentInteractable = null;
+        if(locked) {
+            rb.linearVelocity = Vector2.zero;
         }
     }
 }

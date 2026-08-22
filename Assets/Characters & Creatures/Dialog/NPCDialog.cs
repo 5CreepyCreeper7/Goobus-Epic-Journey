@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NPCDialog : MonoBehaviour, IInteractable
 {
-    public DialogLogicScript dialogLogicScript;
+    //public DialogLogicScript dialogLogicScript;
     private InteractionIndication interactionIndicationScript;
     public AudioSource dialogAudioSource;
     public AudioClip[] dialogAudioClips = {};
@@ -23,7 +23,7 @@ public class NPCDialog : MonoBehaviour, IInteractable
     }
 
     public void triggerDialog() {
-        dialogLogicScript.beginDialog(this);
+        DialogLogicScript.Instance.beginDialog(this);
     }
 
     public void RandomizeDialogAudio() {

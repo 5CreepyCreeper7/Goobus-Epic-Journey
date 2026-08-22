@@ -5,6 +5,16 @@ using UnityEngine.UI;
 
 public class DialogLogicScript : MonoBehaviour
 {
+    public static DialogLogicScript Instance { get; private set; }
+
+    private void Awake() {
+        if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+    
     public GameObject dialogPanel;
     public TMPro.TextMeshProUGUI dialogText;
     private NPCDialog currentNPC;

@@ -39,7 +39,7 @@ public class MusicManager : MonoBehaviour
             case "TitleScreen":
                 StartMusicWithFade(titleTheme, 2f);
                 break;
-            case "TutorialScene":
+            case "Room001":
                 StartMusicWithFade(TutorialTheme, 2f);
                 break;
             case "SampleScene":
@@ -49,7 +49,7 @@ public class MusicManager : MonoBehaviour
                 StartMusicWithFade(Lvl1Theme, 2f);
                 break;
             default:
-                musicSource.Stop();
+                //StartMusicWithFade(TutorialTheme, 2f);
                 break;
         }
     }

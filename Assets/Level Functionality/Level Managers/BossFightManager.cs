@@ -6,6 +6,7 @@ public class BossFightManager : MonoBehaviour
 {
     private bool fightStarted;
     private bool fightEnded;
+    private MusicManager musicManager;
 
     [Header("Boss")]
     [SerializeField] private GameObject boss;
@@ -25,7 +26,6 @@ public class BossFightManager : MonoBehaviour
     [SerializeField] private UnityEvent onFightEnd;
 
     [Header("Boss Music")]
-    [SerializeField] private MusicManager musicManager;
     [SerializeField] private float musicFadeDuration;
     [SerializeField] private AudioClip MainLevelMusic;
     [SerializeField] private AudioClip MinorBossMusic;
@@ -44,6 +44,13 @@ public class BossFightManager : MonoBehaviour
 
         if (Exit != null) {
             Exit.SetActive(true);
+        }
+
+        musicManager = MusicManager.Instance;
+
+        if(musicManager == null)
+        {
+            Debug.LogError("Boss fight manager could not find music manager.");
         }
     }
 

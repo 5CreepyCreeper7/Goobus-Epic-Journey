@@ -17,9 +17,11 @@ public class TransitionAnimation : MonoBehaviour
     public IEnumerator Fade(float startAlpha, float endAlpha) {
         float timer = 0;
 
+        FadeCanvasGroup.alpha = startAlpha;
+
         while(timer < fadeDuration) {
-            timer += Time.deltaTime;
-            float t = timer / fadeDuration;
+            timer += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(timer / fadeDuration);
 
             FadeCanvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
 

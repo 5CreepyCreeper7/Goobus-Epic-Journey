@@ -4,11 +4,11 @@ public class PlaceCharacter : MonoBehaviour
 {
     public void PlacePlayer()
     {
-        Transform spawnPoint = RoomManager.Instance.GetCurrentSpawnPoint();
+        RoomSpawnPoint spawnPoint = RoomManager.Instance.GetCurrentSpawnPoint();
 
         if (spawnPoint != null)
         {
-            transform.position = spawnPoint.position;
+            transform.position = spawnPoint.transform.position;
         }
         else
         {

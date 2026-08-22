@@ -4,6 +4,6 @@ public class StartGame : MonoBehaviour
 {
     public void LoadGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TutorialScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Room001");
     }
 }

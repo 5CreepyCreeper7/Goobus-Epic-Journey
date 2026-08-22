@@ -74,6 +74,6 @@ public class GameSettingsManager : MonoBehaviour
     }
 
     public void LinkToDiscord() {
-        Application.OpenURL("https://discord.gg/Dk4Kzf75");
+        Application.OpenURL("https://discord.gg/b5BztTs2x3");
     }
 }

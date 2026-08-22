@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class RecordMenuLogic : MonoBehaviour
@@ -63,8 +64,8 @@ public class RecordMenuLogic : MonoBehaviour
     private bool isPaused = false;
     private bool isDraggingSlider = false;
 
-    private AudioSource audioSource;
-    private AudioSource mainAudioSource;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource mainAudioSource;
 
     [Header("Visualizer Settings")]
     public float pulseIntensity = 1.5f;
@@ -74,8 +75,6 @@ public class RecordMenuLogic : MonoBehaviour
     private float[] audioSamples = new float[512];
 
     private void Awake() {
-        audioSource = GameObject.FindGameObjectWithTag("RecordPlayer").GetComponent<AudioSource>();
-        mainAudioSource = GameObject.FindGameObjectWithTag("Manager").GetComponent<AudioSource>();
         pauseButtonImage = pauseButton.GetComponent<Image>();
         shuffleButtonImage = shuffleButton.GetComponent<Image>();
         loopButtonImage = loopButton.GetComponent<Image>();
@@ -84,6 +83,11 @@ public class RecordMenuLogic : MonoBehaviour
     }
 
     private void Update() {
+        if(audioSource == null)
+        {
+            return;
+        }
+
         if(isDraggingSlider) {
             SeekingRecordSpinEffect();
         } else {
