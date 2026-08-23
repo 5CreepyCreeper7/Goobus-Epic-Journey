@@ -65,7 +65,6 @@ public class RecordMenuLogic : MonoBehaviour
     private bool isDraggingSlider = false;
 
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource mainAudioSource;
 
     [Header("Visualizer Settings")]
     public float pulseIntensity = 1.5f;
@@ -258,14 +257,14 @@ public class RecordMenuLogic : MonoBehaviour
     }
 
     public void ResumeMainAudio() {
-        if(!mainAudioSource.isPlaying) {
-            mainAudioSource.UnPause();
+        if(!MusicManager.MainAudioSource.isPlaying) {
+            MusicManager.MainAudioSource.UnPause();
         }
     }
 
     public void PauseMainAudio() {
-        if(mainAudioSource.isPlaying) {
-            mainAudioSource.Pause();
+        if(MusicManager.MainAudioSource.isPlaying) {
+            MusicManager.MainAudioSource.Pause();
         }
     }
 

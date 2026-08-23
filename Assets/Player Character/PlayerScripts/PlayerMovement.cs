@@ -83,8 +83,17 @@ public class PlayerMovement : MonoBehaviour
     private PlayerSoundFX playerSoundFX;
     private BoxCollider2D boxCollider;
 
-    void Awake()
+    public static PlayerMovement Instance { get; private set; }
+
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         this.spriteRenderer = GetComponent<SpriteRenderer>();
         this.playerAnimationScript = GetComponent<PlayerAnimationScript>();
         this.playerSoundFX = GetComponent<PlayerSoundFX>();

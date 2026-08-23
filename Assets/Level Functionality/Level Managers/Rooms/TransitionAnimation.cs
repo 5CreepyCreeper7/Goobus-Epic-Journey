@@ -3,8 +3,20 @@ using System.Collections;
 
 public class TransitionAnimation : MonoBehaviour
 {
+    public static TransitionAnimation Instance { get; private set; }
+
     [SerializeField] private CanvasGroup FadeCanvasGroup;
     [SerializeField] private float fadeDuration = 1.0f;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     public IEnumerator FadeIn() {
         return Fade(1.0f, 0.0f);

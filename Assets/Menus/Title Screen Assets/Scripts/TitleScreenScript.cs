@@ -18,6 +18,9 @@ public class TitleScreenScript : MonoBehaviour
     private void Start()
     {
         goobusAnimations = goobus.GetComponent<TitleGoobusAnimations>();
+        if (goobusAnimations == null) {
+            Debug.LogWarning("TitleGoobusAnimations not found on goobus object.");
+        }
     }
 
     public void OpenOptionsMenu()

@@ -4,7 +4,10 @@ public class ExitGame : MonoBehaviour
 {
     public void QuitGame()
     {
-        Application.Quit();
-        Debug.Log("Quit Game");
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }

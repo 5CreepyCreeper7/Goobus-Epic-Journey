@@ -1164,7 +1164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e0798df0acc05429ee55c524fdc2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogLogicScript: {fileID: 0}
   dialogAudioSource: {fileID: 0}
   dialogAudioClips: []
   speakerIndex: 4
@@ -1463,7 +1462,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833887715}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7cf3bb787ff6a445b054e006ee85934, type: 3}
   m_Name: 
@@ -2140,52 +2139,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1598548364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1410999487
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1410999488}
-  - component: {fileID: 1410999489}
-  m_Layer: 0
-  m_Name: InitialSpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1410999488
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410999487}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.9800034, y: -0.017074585, z: -0.69}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1598548364}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1410999489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410999487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71c76a798c6b2e24093c49b8ebebf0f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1410999488}
-  playerPrefab: {fileID: 8395221277926435880, guid: f45316675b0aebf429f0b3b317b40b4f, type: 3}
 --- !u!1 &1486149476
 GameObject:
   m_ObjectHideFlags: 0
@@ -13050,9 +13003,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4873464947163777010, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 833887716}
-    - targetCorrespondingSourceObject: {fileID: 8434211707506074584, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1410999488}
     - targetCorrespondingSourceObject: {fileID: 8434211707506074584, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1321209509}

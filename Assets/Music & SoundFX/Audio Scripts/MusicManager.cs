@@ -5,6 +5,8 @@ using System.Collections;
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
+
+    public static AudioSource MainAudioSource { get; private set; }
     
     public AudioManager audioManager;
 
@@ -25,6 +27,7 @@ public class MusicManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
+        MainAudioSource = musicSource;
     }
 
     private void OnDestroy()

@@ -8,16 +8,13 @@ public class RoomManager : MonoBehaviour
     public static RoomManager Instance { get; private set; }
 
     [Header("Persistent References")]
-    [SerializeField] private TransitionAnimation transitionAnimation;
-    [SerializeField] private Transform playerPosition;
-    [SerializeField] private CinemachineConfiner2D confiner;
+    private Transform playerPosition => PlayerMovement.Instance.transform;
 
     [Header("Starting Room")]
     [SerializeField] private int startingSpawnPointID = 1;
 
     [Header("PlayerEntranceAnimation")]
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private Rigidbody2D playerRigidBody;
+    private Rigidbody2D playerRigidBody => PlayerMovement.Instance.rb;
     [SerializeField] private float entranceWalkSpeed = 2f;
     [SerializeField] private float entranceRiseSpeed = 5f;
 
@@ -42,19 +39,35 @@ public class RoomManager : MonoBehaviour
         }
 
         Instance = this;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private IEnumerator Start() {
-        currentRoomScene = SceneManager.GetActiveScene().name;
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Skip the bootstrap scene itself — there's no RoomObject there and nothing to do yet
+        if (scene.name == "BootStrapScene" || scene.name == "TitleScreen") {
+            return;
+        }
+
+       InitializeForScene(scene);
+       
+    }
+
+    public void InitializeForScene(Scene scene)
+    {
+        currentRoomScene = scene.name;
         currentSpawnPointID = startingSpawnPointID;
 
-        yield return null;
-
-        currentRoom = FindRoomObjectInActiveScene();
+        currentRoom = FindRoomObjectInScene(scene);
 
         if(currentRoom == null) {
             Debug.LogError($"No RoomObject found in scene {currentRoomScene}");
-            yield break;
+            return;
         }
 
         UpdateCameraBounds();
@@ -70,8 +83,8 @@ public class RoomManager : MonoBehaviour
 {
         inTransition = true;
 
-        if(transitionAnimation != null) {
-            yield return transitionAnimation.FadeOut();
+        if(TransitionAnimation.Instance != null) {
+            yield return TransitionAnimation.Instance.FadeOut();
         }
 
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Single);
@@ -108,32 +121,39 @@ public class RoomManager : MonoBehaviour
             yield break;
         }
 
-        playerMovement.SetControlsLocked(true);
+        PlayerMovement.Instance.SetControlsLocked(true);
         playerRigidBody.linearVelocity = Vector2.zero;
+
+        Vector3 previousPosition = playerPosition.position;
+        playerPosition.position = targetSpawnPoint.transform.position;
+        Vector3 positionDelta = targetSpawnPoint.transform.position - previousPosition;
 
         playerPosition.position = targetSpawnPoint.transform.position;
         currentSpawnPointID = targetSpawnPointID;
 
         Physics2D.SyncTransforms();
 
+        CameraController.Instance?.SnapToTarget(playerPosition, positionDelta);
+
         UpdateCameraBounds();
 
-        yield return new WaitForEndOfFrame();
+        
 
-        if(transitionAnimation != null) {
-            yield return transitionAnimation.FadeIn();
+        yield return null;
+        yield return null;
+
+        yield return new WaitForSecondsRealtime(0.75f);
+
+        if(TransitionAnimation.Instance != null) {
+            yield return TransitionAnimation.Instance.FadeIn();
         }
 
         yield return PlayEntrance(targetSpawnPoint);
 
         playerRigidBody.linearVelocity = Vector2.zero;
-        playerMovement.SetControlsLocked(false);
+        PlayerMovement.Instance.SetControlsLocked(false);
 
         inTransition = false;
-    }
-
-    private RoomObject FindRoomObjectInActiveScene() {
-        return FindRoomObjectInScene(SceneManager.GetActiveScene());
     }
 
     private RoomObject FindRoomObjectInScene(Scene scene) {
@@ -152,12 +172,12 @@ public class RoomManager : MonoBehaviour
     }
 
     private void UpdateCameraBounds() {
-        if(confiner == null || currentRoom == null || currentRoom.CameraBounds == null) {
+        if(currentRoom == null || currentRoom.CameraBounds == null || CameraController.Instance == null) {
             return;
         }
 
-        confiner.BoundingShape2D = currentRoom.CameraBounds;
-        confiner.InvalidateBoundingShapeCache();
+        CameraController.Instance.Confiner.BoundingShape2D = currentRoom.CameraBounds;
+        CameraController.Instance.Confiner.InvalidateBoundingShapeCache();
     }
 
     public int GetCurrentSpawnPointID() {
@@ -193,11 +213,11 @@ public class RoomManager : MonoBehaviour
 
     private IEnumerator PlayStandEntrance()
     {
-        playerMovement.isCrouching = true;
+        PlayerMovement.Instance.isCrouching = true;
 
         yield return new WaitForSeconds(1);
 
-        playerMovement.isCrouching = false;
+        PlayerMovement.Instance.isCrouching = false;
     }
 
     private IEnumerator PlayWalkEntrance(Vector2 endPoint)
@@ -265,5 +285,14 @@ public class RoomManager : MonoBehaviour
         hasBonusReturnLocation = false;
 
         TransitionToRoom(targetScene, targetSpawnPoint);
+    }
+
+    public void LoadSceneAfterTeardown(string sceneName) {
+        StartCoroutine(LoadSceneAfterTeardownRoutine(sceneName));
+    }
+
+    private IEnumerator LoadSceneAfterTeardownRoutine(string sceneName) {
+        yield return null; 
+        SceneManager.LoadScene(sceneName);
     }
 }

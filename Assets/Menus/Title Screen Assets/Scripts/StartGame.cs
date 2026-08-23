@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
+    [SerializeField] private GameObject persistentGameObjectsPrefab;
+
     public void LoadGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Room001");
+        Instantiate(persistentGameObjectsPrefab);
+        SceneManager.LoadScene("Room001");
     }
 }

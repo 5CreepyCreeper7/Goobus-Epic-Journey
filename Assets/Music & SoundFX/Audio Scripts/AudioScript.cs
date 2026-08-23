@@ -7,6 +7,10 @@ public class AudioManager : MonoBehaviour
 
     public AudioMixer audioMixer;
 
+    private float musicVolume = 1f;
+    private float sfxVolume = 1f;
+    private float dialogueVolume = 1f;
+
     private bool isMuted = false;
 
     private void Awake()
@@ -33,20 +37,26 @@ public class AudioManager : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
+        musicVolume = volume;
         audioMixer.SetFloat("Music", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
         PlayerPrefs.SetFloat("MusicVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public void SetSFXVolume(float volume)
     {
+        sfxVolume = volume;
         audioMixer.SetFloat("SoundFX", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
         PlayerPrefs.SetFloat("SFXVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public void SetDialogueVolume(float volume)
     {
+        dialogueVolume = volume;
         audioMixer.SetFloat("Dialogue", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
         PlayerPrefs.SetFloat("DialogueVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public float GetMusicVolume() { return PlayerPrefs.GetFloat("MusicVolume", 1f); }
@@ -65,6 +75,7 @@ public class AudioManager : MonoBehaviour
         isMuted = mute;
         audioMixer.SetFloat("Master", mute ? -80f : 0f);
         PlayerPrefs.SetInt("IsMuted", mute ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public bool IsMuted()

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -153,7 +154,7 @@ public class PauseManager : MonoBehaviour
     }
 
     public void ReturnToTitleScreen() {
-        //Time.timeScale = 1f; 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+        PersistGameplayObject.TearDown();
+        RoomManager.Instance.LoadSceneAfterTeardown("TitleScreen");   
     }
 }
