@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class BonusRoomManager : MonoBehaviour
@@ -54,7 +55,7 @@ public class BonusRoomManager : MonoBehaviour
             return;
         }
 
-        RoomManager.Instance.TransitionToRoom(sceneName, spawnPointID);
+        RoomManager.Instance.TransitionToRoom(sceneName, spawnPointID, RoomTransitionType.EnterBonus);
     }
 
     public void CompleteBonusStage()

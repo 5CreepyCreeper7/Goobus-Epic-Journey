@@ -16,7 +16,7 @@ public class RoomTransition : MonoBehaviour
             return;
         }
 
-        RoomManager.Instance.TransitionToRoom(targetSceneName, TargetSpawnPointID);
+        RoomManager.Instance.TransitionToRoom(targetSceneName, TargetSpawnPointID, RoomTransitionType.Normal);
     }
 }
 

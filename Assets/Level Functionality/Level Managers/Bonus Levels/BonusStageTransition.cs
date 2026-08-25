@@ -15,6 +15,6 @@ public class BonusStageTransition : MonoBehaviour
             return;
         }
         
-        RoomManager.Instance.TransitionToRoom(bonusStageScene, bonusStageSpawnPointID);
+        RoomManager.Instance.TransitionToRoom(bonusStageScene, bonusStageSpawnPointID, RoomTransitionType.EnterBonus);
     }
 }

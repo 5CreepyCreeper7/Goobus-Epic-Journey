@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+
 
 public class RoomManager : MonoBehaviour
 {
@@ -17,6 +19,16 @@ public class RoomManager : MonoBehaviour
     private Rigidbody2D playerRigidBody => PlayerMovement.Instance.rb;
     [SerializeField] private float entranceWalkSpeed = 2f;
     [SerializeField] private float entranceRiseSpeed = 5f;
+
+    [Header("BonusRoomTransitionSettings")]
+    [SerializeField] private float effectRampDuration;
+    [SerializeField] private float effectIntensity;
+    [SerializeField] private float transitionEndAberration;
+    [SerializeField] private float defaultEffectValue;
+    [SerializeField] private float transitionEndEffectRampDuration;
+    [SerializeField] private float transitionEndIntensity;
+    [SerializeField] private float exitEffectRampDuration;
+    [SerializeField] private float transitionEndHue;
 
     private string currentRoomScene;
     private int currentSpawnPointID;
@@ -73,15 +85,24 @@ public class RoomManager : MonoBehaviour
         UpdateCameraBounds();
     }
 
-    public void TransitionToRoom(string targetSceneName, int targetSpawnPointID) {
+    public void TransitionToRoom(string targetSceneName, int targetSpawnPointID, RoomTransitionType transitionType = RoomTransitionType.Normal) {
         if(inTransition) return;
 
-        StartCoroutine(TransitionRoutine(targetSceneName, targetSpawnPointID));
+        StartCoroutine(TransitionRoutine(targetSceneName, targetSpawnPointID, transitionType));
     }
 
-    private IEnumerator TransitionRoutine(string targetSceneName, int targetSpawnPointID)
-{
+    private IEnumerator TransitionRoutine(string targetSceneName, int targetSpawnPointID, RoomTransitionType transitionType)
+    {
         inTransition = true;
+
+        if(transitionType == RoomTransitionType.EnterBonus)
+        {
+            BonusLevelShaderController.Instance.RampWaveTo(effectIntensity, effectRampDuration);
+            BonusLevelShaderController.Instance.RampHueTo(defaultEffectValue, effectRampDuration);
+            BonusLevelShaderController.Instance.RampAberrationTo(defaultEffectValue, effectRampDuration);
+
+            yield return new WaitForSecondsRealtime(effectRampDuration);
+        }
 
         if(TransitionAnimation.Instance != null) {
             yield return TransitionAnimation.Instance.FadeOut();
@@ -103,7 +124,7 @@ public class RoomManager : MonoBehaviour
         yield return null;
 
         currentRoomScene = targetSceneName;
-        currentRoom = FindFirstObjectByType<RoomObject>();
+        currentRoom = FindAnyObjectByType<RoomObject>();
 
         if(currentRoom == null) {
             Debug.LogError($"no roomobject was found in scene {targetSceneName}");
@@ -128,7 +149,6 @@ public class RoomManager : MonoBehaviour
         playerPosition.position = targetSpawnPoint.transform.position;
         Vector3 positionDelta = targetSpawnPoint.transform.position - previousPosition;
 
-        playerPosition.position = targetSpawnPoint.transform.position;
         currentSpawnPointID = targetSpawnPointID;
 
         Physics2D.SyncTransforms();
@@ -136,8 +156,6 @@ public class RoomManager : MonoBehaviour
         CameraController.Instance?.SnapToTarget(playerPosition, positionDelta);
 
         UpdateCameraBounds();
-
-        
 
         yield return null;
         yield return null;
@@ -149,6 +167,23 @@ public class RoomManager : MonoBehaviour
         }
 
         yield return PlayEntrance(targetSpawnPoint);
+
+        switch(transitionType)
+        {
+            case RoomTransitionType.EnterBonus:
+                BonusLevelShaderController.Instance.RampWaveTo(transitionEndIntensity, transitionEndEffectRampDuration);
+                BonusLevelShaderController.Instance.RampAberrationTo(transitionEndAberration, transitionEndEffectRampDuration);
+                BonusLevelShaderController.Instance.RampHueTo(transitionEndHue, transitionEndEffectRampDuration);
+                yield return new WaitForSecondsRealtime(transitionEndEffectRampDuration);
+                break;
+            case RoomTransitionType.ExitBonus:
+                BonusLevelShaderController.Instance.RampTo(0f, exitEffectRampDuration);
+                yield return new WaitForSecondsRealtime(exitEffectRampDuration);
+                break;
+            case RoomTransitionType.Normal:
+            default:
+                break;
+        }
 
         playerRigidBody.linearVelocity = Vector2.zero;
         PlayerMovement.Instance.SetControlsLocked(false);
@@ -269,7 +304,7 @@ public class RoomManager : MonoBehaviour
         bonusReturnSpawnPointID = returnSpawnPointID;
         hasBonusReturnLocation = true;
 
-        TransitionToRoom(bonusScene, bonusSpawnPointID);
+        TransitionToRoom(bonusScene, bonusSpawnPointID, RoomTransitionType.EnterBonus);
     }
 
     public void ExitBonusStage()
@@ -284,7 +319,7 @@ public class RoomManager : MonoBehaviour
 
         hasBonusReturnLocation = false;
 
-        TransitionToRoom(targetScene, targetSpawnPoint);
+        TransitionToRoom(targetScene, targetSpawnPoint, RoomTransitionType.ExitBonus);
     }
 
     public void LoadSceneAfterTeardown(string sceneName) {

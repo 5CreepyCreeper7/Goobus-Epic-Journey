@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
                 automaticMovement = Mathf.Sign(rb.linearVelocity.x);
             }
 
-            playerAnimationScript.updateAnimations(direction.x, isGrounded, false, false, UnityEngine.Random.Range(0, 10000));
+            playerAnimationScript.updateAnimations(direction.x, isGrounded, isCrouching, isDashing, Random.Range(0, 10000));
             UpdateAutomaticFacing(automaticMovement);
 
             return;

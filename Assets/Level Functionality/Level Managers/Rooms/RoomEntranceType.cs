@@ -5,5 +5,6 @@ public enum RoomEntranceType
     Walk,
     DropDown,
     RiseUp,
-    Stand
+    Stand,
+    WakeUp
 }

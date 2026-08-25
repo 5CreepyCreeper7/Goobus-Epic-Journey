@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5656172323550490298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5289730538672593468}
+  - component: {fileID: 3120187841245180706}
+  m_Layer: 0
+  m_Name: BonusLevelShaderControl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5289730538672593468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5656172323550490298}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5789785943039782836}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3120187841245180706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5656172323550490298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94bcedc7b91d4d448b1968bd97c134ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BonusLevelShaderController
+  dreamShaderMaterial: {fileID: 2100000, guid: c3cf1a97afa31784482e7e13d3808cc7, type: 2}
+  defaultRampDuration: 1.5
 --- !u!1 &7398440072228965134
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,8 +258,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: effectIntensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: playerRigidBody
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: transitionEndHue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: entranceRiseSpeed
@@ -222,6 +276,10 @@ PrefabInstance:
     - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: entranceWalkSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: effectRampDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: 'rooms.Array.data[0]'
@@ -234,6 +292,22 @@ PrefabInstance:
     - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: transitionAnimation
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: exitEffectRampDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: transitionEndIntensity
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: transitionEndAberration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518228424273004107, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      propertyPath: transitionEndEffectRampDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3176783944764135878, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       propertyPath: m_Name
@@ -312,6 +386,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6719473051258881586, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3869264583412343798}
+    - targetCorrespondingSourceObject: {fileID: 6719473051258881586, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5289730538672593468}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 511bd92007cdc404995bcc32aeb3924f, type: 3}
 --- !u!4 &5789785943039782836 stripped

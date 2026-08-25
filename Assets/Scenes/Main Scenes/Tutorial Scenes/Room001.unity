@@ -13399,12 +13399,16 @@ PrefabInstance:
       objectReference: {fileID: 820635462}
     - target: {fileID: 6125420003065063383, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
       propertyPath: spawnPoints.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6125420003065063383, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1938609751}
+    - target: {fileID: 6125420003065063383, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
+      propertyPath: 'spawnPoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1235078776}
     - target: {fileID: 6620712872121464501, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.63
