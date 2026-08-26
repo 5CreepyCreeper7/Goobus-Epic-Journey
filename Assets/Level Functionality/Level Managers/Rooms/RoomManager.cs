@@ -98,7 +98,7 @@ public class RoomManager : MonoBehaviour
         if(transitionType == RoomTransitionType.EnterBonus)
         {
             BonusLevelShaderController.Instance.RampWaveTo(effectIntensity, effectRampDuration);
-            BonusLevelShaderController.Instance.RampHueTo(defaultEffectValue, effectRampDuration);
+            BonusLevelShaderController.Instance.RampHueTo(defaultEffectValue, 0);
             BonusLevelShaderController.Instance.RampAberrationTo(defaultEffectValue, effectRampDuration);
 
             yield return new WaitForSecondsRealtime(effectRampDuration);

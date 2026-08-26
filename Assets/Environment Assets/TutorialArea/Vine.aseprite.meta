@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3cea41cc47353df4db07888ece957696
+guid: 5808fe0e70c89e44f917f528aefa8edd
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -54,9 +54,9 @@ ScriptedImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
     normalMap: 0
     textureFormat: 0
     maxTextureSize: 0
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639232713407943623
+  platformSettingsDirtyTick: 639232704155203052
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TitleScreenTutorialBackground
+  - name: Vine
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.48387095, y: -1.2857144}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 1216
-      height: 512
-    spriteID: 3c2793449d8adeb4c86af1dae3023b26
+      width: 62
+      height: 14
+    spriteID: 14a676d54fcba9b4f94ef1ce80a3e888
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,47 +153,35 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2288332654
+      value0: 3457520234
       value1: 0
       value2: 0
       value3: 0
-    guid: -2006634642
-    name: TitleScreenTutorialBackground
+    guid: 0
+    name: Vine
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TitleScreenTutorialBackground
+    - name: Vine
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 1216
-        height: 512
-      spriteId: 3c2793449d8adeb4c86af1dae3023b26
+        x: 2
+        y: 18
+        width: 62
+        height: 14
+      spriteId: 14a676d54fcba9b4f94ef1ce80a3e888
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
     parentIndex: -1
   tileSets: []
   platformSettings:
-  - name: Default
-    overridden: 0
-    ignorePlatformSupport: 0
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    androidETC2FallbackOverride: 0
   - name: DefaultTexturePlatform
     overridden: 0
     ignorePlatformSupport: 0
-    maxTextureSize: 2048
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -205,22 +193,10 @@ ScriptedImporter:
   - name: Standalone
     overridden: 0
     ignorePlatformSupport: 0
-    maxTextureSize: 2048
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    androidETC2FallbackOverride: 0
-  - name: WebGL
-    overridden: 0
-    ignorePlatformSupport: 0
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     forceMaximumCompressionQuality_BC6H_BC7: 0
     crunchedCompression: 0
@@ -229,5 +205,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 1216, y: 512}
-  previousTextureSize: {x: 2048, y: 1024}
+  canvasSize: {x: 64, y: 32}
+  previousTextureSize: {x: 128, y: 32}
