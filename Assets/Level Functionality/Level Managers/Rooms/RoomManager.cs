@@ -95,13 +95,28 @@ public class RoomManager : MonoBehaviour
     {
         inTransition = true;
 
+        PlayerMovement.Instance.SetControlsLocked(true);
+
         if(transitionType == RoomTransitionType.EnterBonus)
         {
+            //Animation for eating berries.
+
             BonusLevelShaderController.Instance.RampWaveTo(effectIntensity, effectRampDuration);
-            BonusLevelShaderController.Instance.RampHueTo(defaultEffectValue, 0);
+
+            yield return new WaitForSecondsRealtime(effectRampDuration / 2);
+
+            PlayerMovement.Instance.playerAnimationScript.ForceCrouching();
+
+            yield return new WaitForSecondsRealtime(effectRampDuration / 2);
+
+            BonusLevelShaderController.Instance.RampHueTo(defaultEffectValue, effectRampDuration);
             BonusLevelShaderController.Instance.RampAberrationTo(defaultEffectValue, effectRampDuration);
 
             yield return new WaitForSecondsRealtime(effectRampDuration);
+        } else if(transitionType == RoomTransitionType.ExitBonus)
+        {
+            PlayerMovement.Instance.playerAnimationScript.ForceCrouching();
+            yield return new WaitForSecondsRealtime(effectRampDuration / 2);
         }
 
         if(TransitionAnimation.Instance != null) {
@@ -153,6 +168,10 @@ public class RoomManager : MonoBehaviour
 
         Physics2D.SyncTransforms();
 
+        if (transitionType == RoomTransitionType.EnterBonus || transitionType == RoomTransitionType.ExitBonus) {
+            PlayerMovement.Instance.playerAnimationScript.ForceCrouching();
+        }   
+
         CameraController.Instance?.SnapToTarget(playerPosition, positionDelta);
 
         UpdateCameraBounds();
@@ -166,7 +185,7 @@ public class RoomManager : MonoBehaviour
             yield return TransitionAnimation.Instance.FadeIn();
         }
 
-        yield return PlayEntrance(targetSpawnPoint);
+        //yield return PlayEntrance(targetSpawnPoint);
 
         switch(transitionType)
         {
@@ -175,13 +194,16 @@ public class RoomManager : MonoBehaviour
                 BonusLevelShaderController.Instance.RampAberrationTo(transitionEndAberration, transitionEndEffectRampDuration);
                 BonusLevelShaderController.Instance.RampHueTo(transitionEndHue, transitionEndEffectRampDuration);
                 yield return new WaitForSecondsRealtime(transitionEndEffectRampDuration);
+                PlayerMovement.Instance.playerAnimationScript.ForceStanding();
                 break;
             case RoomTransitionType.ExitBonus:
                 BonusLevelShaderController.Instance.RampTo(0f, exitEffectRampDuration);
                 yield return new WaitForSecondsRealtime(exitEffectRampDuration);
+                PlayerMovement.Instance.playerAnimationScript.ForceStanding();
                 break;
             case RoomTransitionType.Normal:
             default:
+                yield return PlayEntrance(targetSpawnPoint);
                 break;
         }
 

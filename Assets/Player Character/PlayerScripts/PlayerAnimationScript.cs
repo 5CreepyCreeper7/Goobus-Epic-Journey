@@ -26,7 +26,9 @@ public class PlayerAnimationScript : MonoBehaviour
         anim.SetFloat("Speed", speed);
     }
 
-    public void ForceIdle() {
-        anim.SetFloat("Speed", 0);
-    }
+    public void ForceIdle() { anim.SetFloat("Speed", 0); }
+
+    public void ForceCrouching() { anim.SetBool("IsCrouching", true); PlayerMovement.Instance.forceSitting = true; }
+
+    public void ForceStanding() { anim.SetBool("IsCrouching", false); PlayerMovement.Instance.forceSitting = false; }
 }

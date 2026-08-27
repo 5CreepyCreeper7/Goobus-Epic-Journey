@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
+    public static PauseManager Instance { get; private set; }
     public GameObject PauseMenu;
     public GameObject optionsMenu;
     public GameObject videoSettingsMenu;
@@ -26,6 +27,11 @@ public class PauseManager : MonoBehaviour
     void Start()
     {
         pauseAction.action.Enable();
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     // Update is called once per frame

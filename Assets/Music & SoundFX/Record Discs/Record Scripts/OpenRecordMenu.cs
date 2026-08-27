@@ -7,6 +7,7 @@ public class OpenRecordMenu : MonoBehaviour
     public GameObject recordMenuPanel;
     private PlayerMovement playerMovementScript;
     private RecordMenuLogic RecordMenuLogic;
+    private RecordUIAnimation RecordUIAnimation;
 
     private bool playerInRange = false;
     private bool isMenuOpen = false;
@@ -14,6 +15,21 @@ public class OpenRecordMenu : MonoBehaviour
     private void Awake() {
         playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         RecordMenuLogic = recordMenuPanel.GetComponent<RecordMenuLogic>();
+        RecordUIAnimation = recordMenuPanel.GetComponent<RecordUIAnimation>();
+    }
+
+    private void OnEnable()
+    {
+        if(RecordUIAnimation != null)
+        {
+            RecordUIAnimation.OnCloseComplete += HandleCloseComplete;
+        }
+    }
+
+    private void OnDisable() {
+        if (RecordUIAnimation != null) {
+            RecordUIAnimation.OnCloseComplete -= HandleCloseComplete;
+        }
     }
 
     private void OnInteract(InputValue value) {
@@ -21,8 +37,12 @@ public class OpenRecordMenu : MonoBehaviour
             return;
         }
 
+        if(PauseManager.Instance != null && PauseManager.Instance.isPaused) {
+            return;
+        }
+
         if(recordMenuPanel.activeSelf) {
-            CloseMenu(recordMenuPanel);
+            CloseMenu();
         } else {
             TryToOpenMenu();
         }
@@ -34,7 +54,7 @@ public class OpenRecordMenu : MonoBehaviour
         }
 
         if(RecordMenuLogic != null) {
-            OpenMenu(recordMenuPanel);
+            OpenMenu();
         }    
     }
 
@@ -50,21 +70,27 @@ public class OpenRecordMenu : MonoBehaviour
         }
     }
 
-    public void OpenMenu(GameObject recordMenuPanel) {
-        recordMenuPanel.SetActive(true);
+    public void OpenMenu() {
         GoobusUI.SetActive(false);
         isMenuOpen = true;
         playerMovementScript.enabled = false;
         playerMovementScript.GetComponent<PlayerAnimationScript>().ForceIdle();
         Rigidbody2D rb = playerMovementScript.rb;
         rb.linearVelocity = Vector2.zero;
+
+        RecordUIAnimation.OpenMenu();
     }
 
-    public void CloseMenu(GameObject recordMenuPanel) {
+    public void CloseMenu() {
         RecordMenuLogic.ResetMenu();
-        recordMenuPanel.SetActive(false);
+        isMenuOpen = false;
+
+        RecordUIAnimation.CloseMenu();
+    }
+
+    private void HandleCloseComplete()
+    {
         GoobusUI.SetActive(true);
         playerMovementScript.enabled = true;
-        isMenuOpen = false;
     }
 }

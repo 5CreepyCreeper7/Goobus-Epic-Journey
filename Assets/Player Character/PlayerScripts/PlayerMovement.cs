@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isLaunched;
     public bool controlsLocked;
     private bool jumpQueued;
+    public bool forceSitting;
     
     // Ground check variables
     [Header("Ground Check Settings")]
@@ -79,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Component references
     private SpriteRenderer spriteRenderer;
-    private PlayerAnimationScript playerAnimationScript;
+    public PlayerAnimationScript playerAnimationScript;
     private PlayerSoundFX playerSoundFX;
     private BoxCollider2D boxCollider;
 
@@ -125,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
                 automaticMovement = Mathf.Sign(rb.linearVelocity.x);
             }
 
-            playerAnimationScript.updateAnimations(direction.x, isGrounded, isCrouching, isDashing, Random.Range(0, 10000));
+            playerAnimationScript.updateAnimations(direction.x, isGrounded, forceSitting, isDashing, Random.Range(0, 10000));
             UpdateAutomaticFacing(automaticMovement);
 
             return;

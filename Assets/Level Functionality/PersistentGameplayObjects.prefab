@@ -460,6 +460,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8005398613406251350}
     m_Modifications:
+    - target: {fileID: 281007763663266041, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: orthographic size
+      value: 4.6875
+      objectReference: {fileID: 0}
     - target: {fileID: 1313729532050002782, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
       propertyPath: dialogLogic
       value: 
@@ -508,6 +512,10 @@ PrefabInstance:
       propertyPath: GoobusUI
       value: 
       objectReference: {fileID: 8397645845359181089}
+    - target: {fileID: 5935947117466637441, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5935947117466637441, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
       propertyPath: recordMenuPanel
       value: 
