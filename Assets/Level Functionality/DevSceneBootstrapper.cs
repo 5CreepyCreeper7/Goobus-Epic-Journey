@@ -20,7 +20,13 @@ public class DevSceneBootstrapper : MonoBehaviour
         Instantiate(persistentGameManagersPrefab);
         Instantiate(persistentGameplayObjectsPrefab);
 
+        
+    }
+
+    private void Start()
+    {
         Scene currentScene = SceneManager.GetActiveScene();
+        Debug.Log($"Active scene after spawning managers: {currentScene.name}");
         RoomManager.Instance.InitializeForScene(currentScene);
 
         RoomSpawnPoint spawnPoint = RoomManager.Instance.GetCurrentSpawnPoint();

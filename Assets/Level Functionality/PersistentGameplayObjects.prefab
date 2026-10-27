@@ -576,6 +576,18 @@ PrefabInstance:
       propertyPath: dialogLogic
       value: 
       objectReference: {fileID: 6780544674608331475}
+    - target: {fileID: 1663229630380441877, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663229630380441877, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.30801
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365501390445698412, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5287752782076274552, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
       propertyPath: m_LocalPosition.x
       value: -54.907276
@@ -631,6 +643,14 @@ PrefabInstance:
     - target: {fileID: 6328567030867941328, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
       propertyPath: m_Name
       value: Goober Mk3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162701902021193245, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162701902021193245, guid: a15dfa101a7924b4b879bf43bb194aab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.30801
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

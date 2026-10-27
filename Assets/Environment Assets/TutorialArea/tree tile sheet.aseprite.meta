@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9b8d6d4fd57ce4d41b3f8ba9bf6decfc
+guid: 8ff0c52bb8f433048ab2b0892176e892
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639232713755603162
+  platformSettingsDirtyTick: 639259548138137602
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: egg
+  - name: tree tile sheet
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.6034482, y: -0.07692308}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 24
-      height: 30
-    spriteID: c5593ee8c67c07643b792941f24af3b0
+      width: 464
+      height: 416
+    spriteID: 1133ed4bfc51ac54197345059fbbfbcc
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 1858828593
+      value0: 3996325629
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: egg
+    name: tree tile sheet
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: egg
+    - name: tree tile sheet
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 24
-        height: 30
-      spriteId: c5593ee8c67c07643b792941f24af3b0
+        x: 56
+        y: 32
+        width: 464
+        height: 416
+      spriteId: 1133ed4bfc51ac54197345059fbbfbcc
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -205,5 +205,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 24, y: 30}
-  previousTextureSize: {x: 32, y: 64}
+  canvasSize: {x: 672, y: 480}
+  previousTextureSize: {x: 512, y: 512}

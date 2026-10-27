@@ -214,15 +214,21 @@ public class RoomManager : MonoBehaviour
     }
 
     private RoomObject FindRoomObjectInScene(Scene scene) {
-        if (!scene.IsValid() || !scene.isLoaded)
+        if (!scene.IsValid() || !scene.isLoaded) {
+            Debug.LogError($"Scene invalid or not loaded: valid={scene.IsValid()}, loaded={scene.isLoaded}");
             return null;
+        }
 
-        foreach (GameObject rootObject in scene.GetRootGameObjects()) {
-            RoomObject roomObject =
-                rootObject.GetComponentInChildren<RoomObject>(true);
+        GameObject[] roots = scene.GetRootGameObjects();
+        Debug.Log($"Searching {roots.Length} root objects in '{scene.name}':");
+        foreach (GameObject rootObject in roots) {
+            Debug.Log($"  - {rootObject.name} (active: {rootObject.activeSelf})");
+            RoomObject roomObject = rootObject.GetComponentInChildren<RoomObject>(true);
 
-            if (roomObject != null)
+            if (roomObject != null) {
+                Debug.Log($"    -> Found RoomObject on {roomObject.gameObject.name}");
                 return roomObject;
+            }
         }
 
         return null;
