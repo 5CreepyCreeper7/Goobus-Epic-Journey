@@ -5,6 +5,7 @@ public class EggBossBehavior : MonoBehaviour
 {
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     [Header("Arena Positions")]
     [SerializeField] private Transform rightSide;
@@ -66,6 +67,7 @@ public class EggBossBehavior : MonoBehaviour
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -196,6 +198,7 @@ public class EggBossBehavior : MonoBehaviour
 
     private void StartChargingAttack() {
         isCharging = true;
+        animator.SetBool("IsCharging", true);
         
         if(EggLocation == "Right") {
             chargeTargetPosition = leftSide.position;
@@ -222,6 +225,7 @@ public class EggBossBehavior : MonoBehaviour
 
     private void FinishChargingAttack() {
         rb.linearVelocity = Vector2.zero;
+        animator.SetBool("IsCharging", false);
 
         transform.position = new Vector2(chargeTargetPosition.x, transform.position.y);
 

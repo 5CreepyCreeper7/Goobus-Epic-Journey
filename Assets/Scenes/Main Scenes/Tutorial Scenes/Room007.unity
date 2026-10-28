@@ -2828,6 +2828,10 @@ PrefabInstance:
       propertyPath: 'spawnPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1414360390}
+    - target: {fileID: 6917934860037955256, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7161863274033911208, guid: 510a67930397e8d47b6b3a5f25f65fe5, type: 3}
       propertyPath: m_CompositeOperation
       value: 0
@@ -8603,7 +8607,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.39574003, y: 0.13504028}
+  m_Offset: {x: -0.39574003, y: 0.028751373}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.6954023, y: 0}
@@ -8613,7 +8617,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.4145136, y: 0.23156738}
+  m_Size: {x: 1.4145136, y: 0.06258392}
   m_EdgeRadius: 0
 --- !u!50 &1879374548
 Rigidbody2D:
@@ -8691,7 +8695,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1090107706381602090, guid: ae83b5e41e8e1db4cbbac75ce633b9de, type: 3}
+  m_Sprite: {fileID: 1315735171669076860, guid: 8d5f7f1f832718244bc0e76e1ebfab95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
